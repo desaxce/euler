@@ -1,4 +1,4 @@
-import math
+from math import sqrt
 
 def sum(n):
     return n*(n+1)/2
@@ -19,9 +19,12 @@ def even_sum_fibonacci(n):
         c=a+b
     return resultat
 
-def isprime(n):
-    for i in xrange(int(math.sqrt(n)+1)):
-        if i>1 and n%i==0:
-            return False
-    return True
-
+def biggest_prime_factor(n):
+    primes=[]
+    for i in xrange(2, int(sqrt(n)+1)):
+        while n%i==0:
+            if n==i:
+                return i
+            primes.extend([i])
+            n/=i
+    return n
