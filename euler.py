@@ -389,4 +389,47 @@ def amicable_numbers(n):
         a+=1
     return resultat
 
+def name_score(s):
+    liste=list(s)
+    resultat=0
+    for letter in liste:
+        resultat+=ord(letter)-64
+    return resultat
+
+def names_scores():
+    f=open('names.txt', 'r')
+    line=f.readline()
+    names=line.split('","')
+    names[0]=names[0].lstrip('\"')
+    names[len(names)-1]=names[len(names)-1].rstrip('\"')
+    names.sort()
+    resultat=0
+    cnt=1
+    for s in names:
+        if s=='COLIN':
+            print cnt*name_score(s)
+        resultat+=cnt*name_score(s)
+        cnt+=1
+    return resultat
+
+def is_abundant(n):
+    if sum_of_divisors(n)>n:
+        return True
+    else:
+        return False
+
+def non_abundant_sums():
+    abundant_numbers=[]
+    for i in xrange(1, 28123):
+        if is_abundant(i):
+            abundant_numbers.append(i)
+    resultat=28123*(28123+1)/2
+    liste=[0 for i in xrange(28124)]
+    for i in abundant_numbers:
+        for j in abundant_numbers:
+            if i+j<28124 and liste[i+j]==0:
+                liste[i+j]=1
+                resultat-=i+j
+    return resultat
+
 
