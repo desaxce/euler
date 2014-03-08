@@ -1,6 +1,14 @@
 from math import sqrt
+from math import log
 import rlcompleter, readline
 readline.parse_and_bind('tab:complete')
+
+"""Global variable used to memoize the size of the Collatz sequences"""
+global_collatz = [0 for i in xrange(1000001)]
+global_collatz[1]=1
+
+"""Global variable used to memoize the computations in lattices"""
+global_lattices = [ [0 for i in xrange(21)] for j in xrange(21)]
 
 def sum(n):
     return n*(n+1)/2
@@ -37,7 +45,7 @@ def factor(n):
         while n%i==0:
             primes.extend([i])
             n/=i
-    if n!=1:
+    if n>1:
         primes.append(n)
     return primes
 
@@ -104,7 +112,7 @@ def prime(n):
     return j-2
 
 def largest_product():
-    f=open('digits', 'r')
+    f=open('digits.txt', 'r')
     chaine=""
     for line in f:
         chaine+=line
@@ -137,3 +145,160 @@ def sum_primes(n):
             resultat+=i
         i+=2
     return resultat
+
+def largest_product_in_a_grid():
+    f=open('matrix.txt', 'r')
+    matrix = [[int(x) for x in line.split()] for line in f]
+    resultat=0
+    for i in xrange(20):
+        a, b, c, d = matrix[i][0], matrix[i][1], matrix[i][2], matrix[i][3]
+        if a*b*c*d>resultat:
+            resultat=a*b*c*d
+        for j in xrange(4, 20):
+            a, b, c, d = b, c, d, matrix[i][j]
+            if a*b*c*d>resultat:
+                resultat=a*b*c*d
+        a, b, c, d = matrix[0][i], matrix[1][i], matrix[2][i], matrix[3][i]
+        if a*b*c*d> resultat: 
+            resultat=a*b*c*d
+        for j in xrange(4, 20):
+            a, b, c, d = b, c, d, matrix[j][i]
+            if a*b*c*d>resultat:
+                resultat=a*b*c*d
+
+    for i in xrange(17):
+        a, b, c, d = matrix[0][i], matrix[1][i+1], matrix[2][i+2], matrix[3][i+3]
+        if a*b*c*d>resultat:
+            resultat=a*b*c*d
+        for j in xrange(4, 20-i):
+            a, b, c, d = b, c, d, matrix[j][i+j]
+            if a*b*c*d>resultat:
+                resultat=a*b*c*d
+        a, b, c, d = matrix[i][0], matrix[i+1][1], matrix[i+2][2], matrix[i+3][3]
+        if a*b*c*d>resultat:
+            resultat=a*b*c*d
+        for j in xrange(4, 20-i):
+            a, b, c, d = b, c, d, matrix[i+j][j]
+            if a*b*c*d>resultat:
+                resultat=a*b*c*d
+
+    nmatrix=zip(*matrix[::-1])
+    for i in xrange(17):
+        a, b, c, d = nmatrix[0][i], nmatrix[1][i+1], nmatrix[2][i+2], nmatrix[3][i+3]
+        if a*b*c*d>resultat:
+            resultat=a*b*c*d
+        for j in xrange(4, 20-i):
+            a, b, c, d = b, c, d, nmatrix[j][i+j]
+            if a*b*c*d>resultat:
+                resultat=a*b*c*d
+        a, b, c, d = nmatrix[i][0], nmatrix[i+1][1], nmatrix[i+2][2], nmatrix[i+3][3]
+        if a*b*c*d>resultat:
+            resultat=a*b*c*d
+        for j in xrange(4, 20-i):
+            a, b, c, d = b, c, d, nmatrix[i+j][j]
+            if a*b*c*d>resultat:
+                resultat=a*b*c*d
+
+    return resultat
+
+def factor_concat(n):
+    factors=factor(n)
+    factors_concat=[]
+    size=0
+    while size<len(factors):
+        a=factors[size]
+        cnt=0
+        while size<len(factors) and factors[size]==a:
+            cnt+=1
+            size+=1
+        factors_concat.append([a, cnt])
+    return factors_concat
+
+def number_of_divisors(n):
+    if n==1:
+        return 1
+    factors=factor_concat(n)
+    resultat=1
+    for l in factors:
+        resultat*=(l[1]+1)
+    return resultat
+
+def highly_divisible_triangular_number(n):
+    i=1
+    while True:
+        if number_of_divisors(i*(i+1)/2)>n:
+            return i*(i+1)/2
+        i+=1
+
+def large_sum():
+    f=open('hundred.txt', 'r')
+    resultat=0
+    for line in f:
+       resultat+=int(line) 
+    return resultat
+
+def size_collatz_sequence(n):
+    global global_collatz
+    if n==1:
+        return 1
+
+    if n<1000000:
+        if global_collatz[n]!=0:
+            return global_collatz[n]
+        if n%2==0:
+            global_collatz[n]=1+size_collatz_sequence(n>>1)
+            return global_collatz[n]
+        else:
+            global_collatz[n]=1+size_collatz_sequence(3*n+1)
+            return global_collatz[n]
+    else:
+        if n%2==0:
+            return 1+size_collatz_sequence(n>>1) 
+        else:
+            return 1+size_collatz_sequence(3*n+1)
+        
+
+def longest_collatz_sequence(n):
+    maximum=1
+    resultat=1
+    for i in xrange(1, n):
+        l=size_collatz_sequence(i)
+        if l>maximum:
+            maximum=l
+            resultat=i
+    return resultat
+
+def lattice_paths(n, m):
+    if n==1:
+        return m+1
+    elif m==1:
+        return n+1
+    elif global_lattices[n][m]!=0:
+        return global_lattices[n][m]
+    else:
+        global_lattices[n-1][m]=lattice_paths(n-1, m)
+        global_lattices[n][m-1]=lattice_paths(n, m-1)
+        return global_lattices[n-1][m]+global_lattices[n][m-1]
+
+def word_count():
+    t=len("onetwothreefourfivesixseveneightnine")
+    s=t+49+67+8*t+9*(49-len("and"))
+    return s+(t+9*len("hundred"))+len("onethousand")+9*s+99*9*len("and")+99*(t+63)
+
+def maximum_path_sum_1():
+    f=open("pyramid.txt")
+    matrix = [[int(x) for x in line.split()] for line in f]
+    return matrix[i][j]
+
+def thousand_digit_fibonacci_number():
+    a = 1
+    b = 1
+    cnt=2
+    while True:
+        c = a
+        a = b
+        b = c+b
+        cnt+=1
+        if log(b, 10)>=999:
+            return cnt
+
