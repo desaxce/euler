@@ -353,3 +353,40 @@ def counting_sundays_2():
             if datetime.datetime(y, m, 1).weekday()==6:
                 count+=1
     return count
+
+def factorial_digit_sum(n):
+    from math import factorial
+    resultat=0
+    a=factorial(n)
+    while a!=0:
+        resultat+=a%10
+        a/=10
+    return resultat
+
+def sum_of_divisors(n):
+    resultat=0
+    for i in xrange(1, n/2+1):
+        if n%i==0:
+            resultat+=i
+    return resultat
+
+def is_amicable(n):
+    div_sum=sum_of_divisors(n)
+    if div_sum==n:
+        return False
+    else:
+        if sum_of_divisors(div_sum)==n:
+            return True
+        return False
+
+
+def amicable_numbers(n):
+    resultat=0
+    a=2
+    while a<n:
+        if is_amicable(a):
+            resultat+=a
+        a+=1
+    return resultat
+
+
