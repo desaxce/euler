@@ -10,6 +10,12 @@ global_collatz[1]=1
 """Global variable used to memoize the computations in lattices"""
 global_lattices = [ [0 for i in xrange(21)] for j in xrange(21)]
 
+"""Global variable used to read the pyramid"""
+f=open("pyramid.txt")
+matrix = [[int(x) for x in line.split()] for line in f]
+mem = [[0 for i in xrange(len(matrix))] for j in xrange(len(matrix))]
+mem[0][0]=matrix[0][0]
+
 def sum(n):
     return n*(n+1)/2
 
@@ -285,10 +291,28 @@ def word_count():
     s=t+49+67+8*t+9*(49-len("and"))
     return s+(t+9*len("hundred"))+len("onethousand")+9*s+99*9*len("and")+99*(t+63)
 
+
+def max_path(i, j):
+    global matrix
+    if mem[i][j]!=0:
+        return mem[i][j]
+    elif j==0:
+        return matrix[i][j]+max_path(i-1, j)
+    elif j==len(matrix[i])-1:
+        return matrix[i][j]+max_path(i-1, j-1)
+    else:
+        return matrix[i][j]+max(max_path(i-1, j-1), max_path(i-1, j))
+        
+
 def maximum_path_sum_1():
-    f=open("pyramid.txt")
-    matrix = [[int(x) for x in line.split()] for line in f]
-    return matrix[i][j]
+    global matrix
+    size = len(matrix[len(matrix)-1])
+    resultat=0
+    for i in xrange(size):
+        s=max_path(size-1, i)
+        if resultat<s:
+            resultat=s
+    return resultat
 
 def thousand_digit_fibonacci_number():
     a = 1
@@ -302,3 +326,30 @@ def thousand_digit_fibonacci_number():
         if log(b, 10)>=999:
             return cnt
 
+def counting_sundays():
+    l=[1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335]
+    l_leap=[1, 32, 61, 92, 122, 153, 183, 214, 245, 275, 306, 336]
+    resultat=0
+    """ 1st of January 1901 is a Tuesday"""
+    start=1 
+    for i in xrange(1901, 2001):
+        if i%4==0:
+            s=l_leap
+            new=(start+2)%7
+        else:
+            s=l
+            new=(start+1)%7
+        for day in s:
+            if day%7==(start+2)%7:
+                resultat+=1
+        start=new
+    return resultat
+
+def counting_sundays_2():
+    import datetime
+    count=0
+    for y in range(1901, 2001):
+        for m in range(1, 13):
+            if datetime.datetime(y, m, 1).weekday()==6:
+                count+=1
+    return count
