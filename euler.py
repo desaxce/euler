@@ -95,6 +95,8 @@ def sum_square_difference(n):
     return ((n**2)*((n+1)**2))/4-n*(n+1)*(2*n+1)/6
 
 def is_prime(n):
+    if n<=0:
+        return False
     if n==1:
         return False
     if n==2:
@@ -462,3 +464,20 @@ def reciprocal_cycles(n):
             resultat=s
             index=i
     return index, resultat
+
+def number_of_quadratic_primes(a, b):
+    n=0
+    while is_prime(n**2+a*n+b):
+        n+=1
+    return n
+
+def quadratic_primes(n):
+    product=0
+    k=0
+    for a in xrange(-999, 1000):
+        for b in xrange(-999, 1000):
+            s=number_of_quadratic_primes(a, b)
+            if s>k:
+                k=s
+                product=a*b
+    return product
