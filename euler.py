@@ -432,9 +432,33 @@ def non_abundant_sums():
                 resultat-=i+j
     return resultat
 
+"""TODO:"""
 def lexicographic_permutations():
     perms=[]
     perms.sort()
-    return perms
-                                                            
-        
+    return perm
+
+def cycle_size(n):
+    array=[1]
+    start=1
+    while len(array)==len(set(array)):
+        start=start*10%n
+        if start==0:
+            return 0
+        array.append(start)
+    
+    doublon=array[len(array)-1]
+    for i in xrange(len(array)-1):
+        if array[i]==doublon:
+            return len(array)-1-i
+    return 0
+
+def reciprocal_cycles(n):
+    resultat=0
+    index=2
+    for i in xrange(1, n):
+        s=cycle_size(i)
+        if s>resultat:
+            resultat=s
+            index=i
+    return index, resultat
