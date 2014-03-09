@@ -432,4 +432,9 @@ def non_abundant_sums():
                 resultat-=i+j
     return resultat
 
-
+def lexicographic_permutations():
+    perms=[]
+    perms.sort()
+    return perms
+                                                            
+        
