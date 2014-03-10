@@ -481,3 +481,51 @@ def quadratic_primes(n):
                 k=s
                 product=a*b
     return product
+
+def number_spiral_diagonals():
+    resultat=1
+    index=1
+    for i in xrange(1, 501):
+        resultat+=4*index+2*i*10
+        index=index+2*i*4
+    return resultat
+
+def distinct_powers(n):
+    powers=[]
+    for a in xrange(2, n+1):
+        for b in xrange(2, n+1):
+            powers.append(a**b)
+    return len(set(powers))
+
+def digit_fifth_powers():
+    resultat=0
+    for i in xrange(2, 1000000):
+        s=list(str(i))
+        somme=0
+        for digits in s:
+            somme+=int(digits)**5
+        if somme==i:
+            resultat+=i
+            print i
+    return resultat
+
+global_counter=0
+
+def coin_sums(x, l):
+    global global_counter
+    if x==0:
+        global_counter+=1
+    elif len(l)!=0:
+        m=max(l)
+        lpop=list(l)
+        lpop.remove(m)
+        for i in xrange(x//m, -1, -1):
+            coin_sums(x-i*m, lpop)
+
+def coin_sums_pound():
+    global global_counter
+    l=[1, 2, 5, 10, 20, 50, 100, 200]
+    coin_sums(200, l)
+    return global_counter
+
+
