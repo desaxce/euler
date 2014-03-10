@@ -528,4 +528,70 @@ def coin_sums_pound():
     coin_sums(200, l)
     return global_counter
 
+def pandigital_products():
+    from math import log
+    numbers=[]
+    cnt=0
+    for i in xrange(1, 10000):
+        for j in xrange(1, 10**(4-int(log(i)/log(10)))):
+            k=i*j
+            l=list(str(i))
+            l.extend(list(str(j)))
+            l.extend(list(str(k)))
+            if '0' not in l and len(l)==9 and len(set(l))==9 and k not in numbers:
+                cnt+=k
+                numbers.append(k)
+                print i, j, k
+    return cnt
 
+def digit_cancelling_fractions():
+    array=[]
+    for i in xrange(10, 100):
+        for j in xrange(i+1, 100):
+            l=list(str(i))
+            l.extend(list(str(j)))
+            common=list(set(list(str(i))) & set(list(str(j))))
+            if '0' in common:
+                common.remove('0')
+            if len(set(l))<=3 and len(common)>=1:
+                li=list(str(i))
+                lj=list(str(j))
+                li.remove(common[0])
+                lj.remove(common[0])
+                if int(lj[0])!=0 and i*1.0/j==int(li[0])*1.0/int(lj[0]):
+                    array.append([i, j])
+    return array
+
+global_fac_array=[1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
+
+def fac(n):
+    global global_fac_array
+    resultat=0
+    for d in list(str(n)):
+        resultat+=global_fac_array[int(d)]
+    return resultat
+
+
+def digit_factorials():
+    resultat=0
+    for i in xrange(100000):
+        if i==fac(i):
+            resultat+=i
+    return resultat-1-2
+
+def rotate(l, n):
+    return l[n:]+l[:n]
+
+def circular_primes():
+    """On compte le nombre premier 2 des le depart"""
+    cnt=1 
+    for i in xrange(1000000):
+        if is_prime(i):
+            l=list(str(i))
+            if '0' not in l and '2' not in l and '4' not in l and '6' not in l and '8' not in l:
+                is_circular=1
+                for j in xrange(len(l)):
+                    if not is_prime(int(''.join(rotate(l, j)))):
+                        is_circular*=0
+                cnt+=is_circular
+    return cnt
