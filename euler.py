@@ -624,3 +624,87 @@ def double_base_palindromes():
         if is_palindromic_base_ten(i) and is_palindromic_base_two(i):
             cnt+=i
     return cnt
+
+def is_a_truncatable_prime(n):
+    if is_prime(n):
+        l=list(str(n))
+        for i in xrange(1, len(l)):
+            if not is_prime(int("".join(l[i:len(l)]))):
+                return False
+            if not is_prime(int("".join(l[0:i]))):
+                return False
+        return True
+    else:
+        return False
+
+def truncatable_primes():
+    i=10
+    somme=0
+    while len(a)!=11:
+        if is_a_truncatable_prime(i):
+            somme+=i
+        i+=1
+    return somme
+
+def pandigital_multiples():
+    resultat=0
+    for i in xrange(10000):
+        l=[]
+        j=1
+        while len(l)<9 and len(l)==len(set(l)) and not '0' in l:
+            l.extend(list(str(i*j)))
+            j+=1
+        if len(set(l))==9 and not '0' in l:
+            resultat+=1
+            print i
+    return resultat
+
+def integer_right_triangles():
+    array=[0 for i in xrange(1001)]
+    resultat=0
+    index=0
+    for p in xrange(1001):
+        for a in xrange(p//2+1):
+            ac=a**2
+            for b in xrange(p-2*a+1):
+                c=sqrt(ac+b**2)
+                if a+b+c==p:
+                    array[p]+=1
+        if resultat<array[p]:
+            resultat=array[p]
+            index=p
+    return index
+
+def nth_digit_champernowne(n):
+    somme=0
+    k=0
+    while somme < n:
+        somme+=(k+1)*9*10**k
+        k+=1
+    somme-=k*9*10**(k-1)
+    n-=somme
+    k-=1
+    nombre=10**k+(n//(k+1))
+    n-=(n//(k+1))*(k+1)
+    return int(list(str(nombre))[n-1])
+
+
+def champernownes_constant():
+    resultat=1
+    for i in xrange(1, 7):
+        resultat*=nth_digit_champernowne(10**i)
+    return resultat
+
+def pandigital_prime():
+    array=[]
+    from math import log
+    k=[[str(m) for m in xrange(1, i+1)] for i in xrange(10)]
+    for i in xrange(987654321, 1, -1):
+        l=list(str(i))
+        l=list(set(l))
+        l.sort()
+        if l==k[9]:
+            if is_prime(i):
+                array.append(i)
+                print i
+    return array
