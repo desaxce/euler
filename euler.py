@@ -595,3 +595,32 @@ def circular_primes():
                         is_circular*=0
                 cnt+=is_circular
     return cnt
+
+def is_palindromic_base_ten(j):
+    """
+    Uncomment if you want to count palindromes with leading zeros
+    if j%10==0:
+        return is_palindromic_base_ten(j//10)"""
+    l=list(str(j))
+    for i in xrange(len(l)//2):
+        if l[i]!=l[len(l)-i-1]:
+            return False
+    return True
+
+def is_palindromic_base_two(j):
+    """
+    Uncomment if you want to count palindromes with leading zeros
+    if j%2==0:
+        return is_palindromic_base_two(j//2)"""
+    l=list(bin(j).lstrip('0b'))
+    for i in xrange(len(l)//2):
+        if l[i]!=l[len(l)-i-1]:
+            return False
+    return True
+
+def double_base_palindromes():
+    cnt=0
+    for i in xrange(1, 1000000):
+        if is_palindromic_base_ten(i) and is_palindromic_base_two(i):
+            cnt+=i
+    return cnt
