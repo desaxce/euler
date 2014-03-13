@@ -696,15 +696,65 @@ def champernownes_constant():
     return resultat
 
 def pandigital_prime():
-    array=[]
-    from math import log
-    k=[[str(m) for m in xrange(1, i+1)] for i in xrange(10)]
-    for i in xrange(987654321, 1, -1):
-        l=list(str(i))
-        l=list(set(l))
-        l.sort()
-        if l==k[9]:
-            if is_prime(i):
-                array.append(i)
-                print i
-    return array
+    resultat=0
+    from itertools import permutations
+    array=list(permutations(['1', '2', '3', '4', '5', '6', '7'])) 
+    for s in array:
+        i=int(''.join(s))
+        if is_prime(i):
+            if i>resultat:
+                resultat=i
+            print i
+    return resultat 
+
+def coded_triangle_numbers():
+    cnt=0
+    array=[n*(n+1)/2 for n in xrange(200)]
+    f=open('words.txt', 'r')
+    line=f.readline()
+    words=line.split('","')
+    words[0]=words[0].lstrip('\"')
+    words[len(words)-1]=words[len(words)-1].rstrip('\"')
+    for w in words:
+        somme=0
+        for c in list(w):
+            somme+=ord(c)-64
+        if somme in array:
+            cnt+=1
+    return cnt 
+
+def sub_string_divisibility():
+    somme=0
+    from itertools import permutations
+    array=list(permutations(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])) 
+    liste=[2, 3, 5, 7, 11, 13, 17]
+    """0 should not be in first position"""
+    """for p in array:
+        if p[0]=='0':
+            array.remove(p)
+    print 'OK'"""
+    for p in array:
+        b=1
+        for j in xrange(2, 9):
+            if int(''.join(p[j-1:j+2]))%liste[j-2]!=0:
+                b*=0
+        if b==1:
+            somme+=int(''.join(p))
+            print int(''.join(p))
+    return somme
+
+def triangular_pentagonal_and_hexagonal():
+    triangle=[n*(n+1)/2 for n in xrange(100000)]
+    pentagonal=[n*(3*n-1)/2 for n in xrange(57735)]
+    hexagonal=[n*(2*n-1) for n in xrange(50000)]
+    for i in hexagonal:
+        if i in pentagonal and i in triangle:
+            print i
+
+def pentagon_numbers():
+    pentagonal=[n*(3*n-1)/2 for n in xrange(1, 1000)]
+    for i in xrange(999):
+        for j in :
+            if i+j in pentagonal and abs(i-j) in pentagonal:
+                print i, j
+
