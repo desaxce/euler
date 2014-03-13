@@ -753,8 +753,43 @@ def triangular_pentagonal_and_hexagonal():
 
 def pentagon_numbers():
     pentagonal=[n*(3*n-1)/2 for n in xrange(1, 1000)]
-    for i in xrange(999):
-        for j in :
-            if i+j in pentagonal and abs(i-j) in pentagonal:
-                print i, j
 
+def is_consecutive(i, j):
+    l=list(set(factor(i)))
+    m=list(set(factor(j)))
+    if len(list(set(l) - set(m)))>3 and len(list(set(l)|set(m)))>len(l)+3:
+        return True
+    return False
+
+def distinct_primes_factors():
+    for i in xrange(100000, 1000000):
+        if is_consecutive(i, i+1) and is_consecutive(i+1, i+2) and is_consecutive(i+2, i+3):
+            print i, i+1, i+2, i+3
+
+def prime_permutations():
+    for i in xrange(1000, 10000):
+        if is_prime(i):
+            for j in xrange(1, (10000-i)/2+1):
+                if is_prime(i+j) and is_prime(i+2*j):
+                    if set(list(str(i)))==set(list(str(i+j))) and set(list(str(i)))==set(list(str(i+2*j))):
+                        print i, i+j, i+2*j
+
+def consecutive_prime_sum():
+    primes=[]
+    for i in xrange(100000):
+        if is_prime(i):
+            primes.append(i)
+   
+    resultat=0
+    p=2
+    for j in xrange(len(primes)):
+        somme=primes[j]
+        i=j+1
+        while somme<1000000:
+            if is_prime(somme) and resultat<i-j:
+                resultat=i-j
+                p=somme
+                print p
+            somme+=primes[i]
+            i+=1
+    return resultat
