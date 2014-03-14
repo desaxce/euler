@@ -1,5 +1,9 @@
 from math import sqrt
 from math import log
+from itertools import combinations
+from itertools import permutations
+from collections import Counter
+from sage.all import*
 import rlcompleter, readline
 readline.parse_and_bind('tab:complete')
 
@@ -793,3 +797,48 @@ def consecutive_prime_sum():
             somme+=primes[i]
             i+=1
     return resultat
+
+def find_subsets(s, m):
+    return set(combinations(s, m))
+
+def doublons(l):
+    resultat=[]
+    if len(l)==len(set(l)):
+        return resultat
+    else:
+        s=list(Counter(l).items()) 
+        ls=list(s)
+        for e in s:
+            if e[1]==1:
+                ls.remove(e)
+        return ls
+        
+
+def prime_digit_replacements():
+    primes=[]
+    for i in xrange(100000):
+        if is_prime(i) and len(set(list(str(i))))!=len(list(str(i))):
+            primes.append(i)
+    print "Done"
+    print len(primes)
+    for p in primes:
+        l=list(str(p))
+        db=doublons(l)
+        for s in db:
+            for j in xrange(1, s[1]+1):
+                for perm in list(find_subsets(set([i for i, x in enumerate(l) if x==s[0]])-set([0]), j)):
+                    cnt=0
+                    i=0
+                    while i<10 and cnt<4:
+                        ls=list(l)
+                        for m in perm:
+                            ls[m]=str(i)
+                        if not is_prime(int(''.join(ls))):
+                            cnt+=1
+                        i+=1
+                    if cnt<4:
+                        print p, perm
+                        return p
+                        
+
+
