@@ -956,4 +956,313 @@ def S(n):
         hashmap[n]=e
         return e
 
+def suits(g):
+    return list(set([str(s)[1:] for s in g]))
+
+def value(s):
+    v=str(s)[:-1]
+    if v=='A':
+        return 14
+    elif v=='K':
+        return 13
+    elif v=='Q':
+        return 12
+    elif v=='J':
+        return 11
+    elif v=='T':
+        return 10
+    else:
+        return int(v)
+
+
+def high_card(g):
+    highest_value=0
+    index=0
+    for s in g:
+        t=value(s)
+        if t>highest_value:
+            highest_value=t
+            index=s
+    return index
+
+def is_one_pair(g):
+    r=[value(c) for c in g]
+    db=doublons(r)
+    cnt=0
+    for d in db:
+        if d[1]==2:
+            return True
+    return False
+
+def is_two_pairs(g):
+    r=[value(c) for c in g]
+    db=doublons(r)
+    cnt=0
+    for d in db:
+        if d[1]==2:
+            cnt+=1
+    return (cnt==2)
+
+def is_three_of_a_kind(g):
+    r=[value(c) for c in g]
+    db=doublons(r)
+    for d in db:
+        if d[1]==3:
+            return True
+    return False
+    
+
+def is_straight(g):
+    r=[value(c) for c in g]
+    for i in xrange(2, 11):
+        l=[i+j for j in xrange(5)]
+        if set(r)==set(l):
+            return True
+    return False
+
+def is_flush(g):
+    if len(suits(g))==1:
+        return True
+    return False
+
+def is_full_house(g):
+    l=[value(c) for c in g]
+    if len(set(l))>2:
+        return False
+    else:
+        if len(doublons(l))==2:
+            return True
+        return False
+
+
+def is_four_of_a_kind(g):
+    l=[value(c) for c in g]
+    if len(set(l))>2:
+        return False
+    else:
+        if len(doublons(l))==1:
+            return True
+        return False
+
+def is_straight_flush(g):
+    if is_flush(g) and is_straight(g):
+        return True
+    return False
+
+def is_royal_flush(g):
+    if not is_flush(g):
+        return False
+    else:
+        r=[value(c) for c in g]
+        if set(r)==set([10, 11, 12, 13, 14, 15]):
+            return True
+        return False
+
+def what_is(g):
+    if is_royal_flush(g):
+        return 10
+    elif is_straight_flush(g):
+        return 9
+    elif is_four_of_a_kind(g):
+        return 8
+    elif is_full_house(g):
+        return 7
+    elif is_flush(g):
+        return 6
+    elif is_straight(g):
+        return 5
+    elif is_three_of_a_kind(g):
+        return 4
+    elif is_two_pairs(g):
+        return 3
+    elif is_one_pair(g):
+        return 2
+    else:
+        return 1
+
+def is_superior(g, h, n):
+    if n==1:
+        c_g=high_card(g)
+        c_h=high_card(h)
+        if value(c_g)>value(c_h):
+            return 1
+        elif value(c_g)==value(c_h):
+            g.remove(c_g)
+            h.remove(c_h)
+            return is_superior(g, h, 1)
+        return 0
+    elif n==2:
+        l_g=[value(c) for c in g]
+        l_h=[value(c) for c in h]
+        db_g=doublons(l_g)
+        db_h=doublons(l_h)
+        if db_g[0][0]>db_h[0][0]:
+            return 1
+        elif db_g[0][0]==db_h[0][0]:
+            gs=list(g)
+            for c in g:
+                if value(c)==db_g[0][0]:
+                    gs.remove(c)
+            hs=list(h)
+            for c in h:
+                if value(c)==db_h[0][0]:
+                    hs.remove(c)
+            return is_superior(gs, hs, 1)
+        return 0
+    elif n==3:
+        l_g=[value(c) for c in g]
+        l_h=[value(c) for c in h]
+        db_g=doublons(l_g)
+        db_h=doublons(l_h)
+        m_g=max(db_g[0][0], db_g[1][0])
+        m_h=max(db_h[0][0], db_h[1][0])
+        min_g=min(db_g[0][0], db_g[1][0])
+        min_h=min(db_h[0][0], db_h[1][0])
+        
+        if m_g>m_h:
+            return 1
+        elif m_g<m_h:
+            return 0
+        elif m_g==m_h:
+            if min_g>min_h:
+                return 1
+            elif min_g<min_h:
+                return 0
+            elif min_g==min_h:
+                gs=list(g)
+                for c in g:
+                    if value(c)==m_g or value(c)==min_g:
+                        gs.remove(c)
+                hs=list(h)
+                for c in h:
+                    if value(c)==m_h or value(c)==min_h:
+                        hs.remove(c)
+                return is_superior(gs, hs, 1)
+    elif n==4:
+        l_g=[value(c) for c in g]
+        l_h=[value(c) for c in h]
+        db_g=doublons(l_g)
+        db_h=doublons(l_h)
+        if db_g[0][0]>db_h[0][0]:
+            return 1
+        elif db_g[0][0]==db_h[0][0]:
+            gs=list(g)
+            for c in g:
+                if value(c)==db_g[0][0]:
+                    gs.remove(c)
+            hs=list(h)
+            for c in h:
+                if value(c)==db_h[0][0]:
+                    hs.remove(c)
+            return is_superior(gs, hs, 1)
+        return 0
+    elif n==5:
+        return is_superior(g, h, 1)
+    """TODO:Il y a d'autres cas a prendre en compte!!!"""
+
+        
+
+        
+
+def poker_hands():
+    f=open('poker.txt', 'r')
+    hands=[f.readline()[:-1].split(' ') for i in xrange(1000)]
+    hands_1=[[h[i] for i in xrange(5)] for h in hands]
+    hands_2=[[h[i] for i in xrange(5, 10)] for h in hands]
+    cnt=0
+    for i in xrange(len(hands_1)):
+        wi_1=what_is(hands_1[i])
+        wi_2=what_is(hands_2[i])
+        if wi_1>wi_2:
+            cnt+=1
+        elif wi_1==wi_2:
+            cnt+=is_superior(hands_1[i], hands_2[i], wi_1)
+    return cnt
+
+def reverse_and_add(n):
+    l=list(str(n))
+    return n+int(''.join(l[::-1]))
+
+def is_a_lychrel_number(n):
+    a=0
+    while a<50:
+        n=reverse_and_add(n)
+        if is_palindromic_base_ten(n):
+            return False
+        a+=1
+    return True
+
+def lychrel_numbers(n):
+    cnt=0
+    for i in xrange(n):
+        if is_a_lychrel_number(i):
+            cnt+=1
+    return cnt
+
+def digits_sum(n):
+    resultat=0
+    for s in list(str(n)):
+        resultat+=int(s)
+    return resultat
+
+def powerful_digit_sum(n):
+    resultat=0
+    for a in xrange(0, n):
+        for b in xrange(0, n):
+            c=digits_sum(a**b)
+            if c>resultat:
+                resultat=c
+    return resultat 
+
+def reduce(a, b):
+    d=gcd(a, b)[0]
+    return [a/d, b/d]
+
+global_array_fractions_development_two=[[] for i in xrange(1000)]
+global_array_fractions_development_two[0]=[2, 1]
+
+def fractions_development_two(n):
+    global global_array_fractions_development_two
+    if len(global_array_fractions_development_two[n])!=0:
+        return global_array_fractions_development_two[n]
+    else:
+        s=fractions_development_two(n-1)
+        t=[2*s[0]+s[1], s[0]]
+        global_array_fractions_development_two[n]=t
+        return t
+
+def square_root_convergents():
+    global global_array_fractions_development_two
+    cnt=0
+    fractions_development_two(999)
+    array=[reduce(x[0]+x[1], x[0]) for x in global_array_fractions_development_two]
+    for c in array:
+        if int(log(c[0])/log(10))>int(log(c[1])/log(10)):
+            cnt+=1
+    return cnt
+    return 0 
+
+def spiral_primes():
+    resultat=0
+    l=[]
+    p=[]
+    ls=[]
+    index=1
+    i=1
+    while True:
+        ls=[]
+        ls.append(index+i+1)
+        ls.append(index+2*(i+1))
+        ls.append(index+3*(i+1))
+        ls.append(index+4*(i+1))
+
+        for x in ls:
+            if is_prime(x):
+                p.append(x)
+            else:
+                l.append(x)
+        if len(p)*1.0/(len(l)+len(p))<0.1:
+            return i
+        index+=4*(i+1)
+        i+=2
 
