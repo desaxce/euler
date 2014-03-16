@@ -3,7 +3,6 @@ from math import log
 from itertools import combinations
 from itertools import permutations
 from collections import Counter
-from sage.all import*
 import rlcompleter, readline
 readline.parse_and_bind('tab:complete')
 
@@ -19,6 +18,8 @@ f=open("pyramid.txt")
 matrix = [[int(x) for x in line.split()] for line in f]
 mem = [[0 for i in xrange(len(matrix))] for j in xrange(len(matrix))]
 mem[0][0]=matrix[0][0]
+
+global_array_89 = [0 for i in xrange(1000)]
 
 def sum(n):
     return n*(n+1)/2
@@ -814,31 +815,145 @@ def doublons(l):
         return ls
         
 
-def prime_digit_replacements():
-    primes=[]
-    for i in xrange(100000):
-        if is_prime(i) and len(set(list(str(i))))!=len(list(str(i))):
-            primes.append(i)
-    print "Done"
-    print len(primes)
-    for p in primes:
-        l=list(str(p))
-        db=doublons(l)
-        for s in db:
-            for j in xrange(1, s[1]+1):
-                for perm in list(find_subsets(set([i for i, x in enumerate(l) if x==s[0]])-set([0]), j)):
-                    cnt=0
-                    i=0
-                    while i<10 and cnt<4:
-                        ls=list(l)
-                        for m in perm:
-                            ls[m]=str(i)
-                        if not is_prime(int(''.join(ls))):
-                            cnt+=1
-                        i+=1
-                    if cnt<4:
-                        print p, perm
-                        return p
-                        
+def prime_digit_replacements(n, r):
+    for p in xrange(n):
+        if is_prime(p): 
+            l=list(str(p))
+            db=list(Counter(l).items())
+            for s in db:
+                for j in xrange(1, s[1]+1):
+                    for perm in list(find_subsets(set([i for i, x in enumerate(l) if x==s[0]]), j)):
+                        if (0) in perm:
+                            i=1
+                            cnt=1
+                        else:
+                            cnt=0
+                            i=0
+                        while i<10 and cnt<r:
+                            ls=list(l)
+                            for m in perm:
+                                ls[m]=str(i)
+                            op=int(''.join(ls))
+                            if not is_prime(op):
+                                cnt+=1
+                            i+=1
+                        if cnt<r:
+                            print p, perm
+                            return p
+                                
+def permuted_multiples():
+    for i in xrange(7):
+        for j in xrange(10**i, (10**(i+1))/6+1):
+            l=list(str(j))
+            l2=list(str(2*j))
+            l3=list(str(3*j))
+            l4=list(str(4*j))
+            l5=list(str(5*j))
+            l6=list(str(6*j))
+            l.sort()
+            l2.sort()
+            l3.sort()
+            l4.sort()
+            l5.sort()
+            l6.sort()
+            if l==l2 and l==l3 and l==l4 and l==l5 and l==l6:
+                return j
+
+def combinatoric_selections(n):
+    from scipy import misc
+    cnt=0
+    for i in xrange(101):
+        for j in xrange(i+1):
+            if misc.comb(i, j)>n:
+                cnt+=1
+    return cnt
+
+def is_89(n):
+    global global_array_89
+    if n<len(global_array_89) and global_array_89[n]!=0:
+        return (global_array_89[n]==-1)
+    else:
+        l=list(str(n))
+        square=0
+        for s in l:
+            square+=int(s)**2
+        if square==1:
+            if n<len(global_array_89):
+                global_array_89[n]==1
+            return False
+        elif square==89:
+            if n<len(global_array_89):
+                global_array_89[n]==-1
+            return True
+        else:
+            f==is_89(square)
+            if n<len(global_array_89):  
+                if f:
+                    global_array_89[n]=-1
+                else:
+                    global_array_89[n]=1
+            return f
+
+def square_digit_chains():
+    cnt=0
+    global global_array_89
+    for i in xrange(1, 10000):
+        is_89(i)
+    for i in xrange(1, 10000000):
+        l=list(str(i))
+        square=0
+        for s in l:
+            square+=int(s)**2
+        print square, global_array_89[square]
+        if global_array_89[square]==-1:
+            print i
+            cnt+=1
+    return cnt
+
+ohash=dict({})
+
+def f(n):
+    if n==1 or n==3:
+        return n
+    elif n in ohash:
+        return ohash[n]
+    elif n%2==0:
+        e=f(n/2)
+    elif n%4==1:
+        k=(n-1)/4
+        e=2*f(2*k+1) -f(k)
+    elif n%4==3:
+        k=(n-3)/4
+        e=3*f(2*k+1) -2*f(k)
+    ohash[n]=e
+    return e
+
+hashmap=dict({})
+
+def S(n):
+    global hashmap
+    if n==1:
+        return 1
+    elif n==2:
+        return 2
+    elif n==3:
+        return 5
+    elif n in hashmap:
+        return hashmap[n]
+    else:
+        if n%4==0:
+            k=n/4
+            e=6*S(2*k+1) -8*S(k) -f(4*k+2)-f(4*k+3) -f(4*k+1)-1
+        elif n%4==1:
+            k=(n-1)/4
+            e=6*S(2*k+1) -8*S(k) -f(4*k+2)-f(4*k+3)-1
+        elif n%4==2:
+            k=(n-2)/4
+            e=6*S(2*k+1) -8*S(k) -f(4*k+3)-1
+        elif n%4==3:
+            k=(n-3)/4
+            e=6*S(2*k+1) -8*S(k)-1
+        hashmap[n]=e
+        return e
 
 
