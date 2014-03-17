@@ -1296,3 +1296,29 @@ def prime_pair_sets():
                                 for m in primes[primes.index(l)+1:]:
                                     if is_prime_pair(i, m) and is_prime_pair(j, m) and is_prime_pair(k, m) and is_prime_pair(l, m):
                                         print int(''.join(i)), int(''.join(j)), int(''.join(k)),  int(''.join(l)), int(''.join(m))
+
+def cyclical_figurate_numbers():
+    triangle=[n*(n+1)/2 for n in xrange(45, 141)]
+    square=[n**2 for n in xrange(32, 100)]
+    pentagonal=[n*(3*n-1)/2 for n in xrange(26, 82)]
+    hexagonal=[n*(2*n-1) for n in xrange(23, 71)]
+    heptagonal=[n*(5*n-3)/2 for n in xrange(21, 64)]
+    octagonal=[n*(3*n-2) for n in xrange(19, 59)]
+    for t in triangle:
+        for s in square:
+            lt=list(str(t))
+            ls=list(str(s))
+            if lt[len(lt)-2:len(lt)]==ls[0:2]:
+                for p in pentagonal:
+                    ps=list(str(p))
+                    if ls[len(ls)-2:len(ls)]==ps[0:2]:
+                        for hexa in hexagonal:
+                            hexas=list(str(hexa))
+                            if ps[len(ps)-2:len(ps)]==hexas[0:2]:
+                                for hepta in heptagonal:
+                                    heptas=list(str(hepta))
+                                    if hexas[len(hexas)-2:len(hexas)]==heptas[0:2]:
+                                        for o in octagonal:
+                                            os=list(str(o))
+                                            if heptas[len(heptas)-2:len(heptas)]==os[0:2]:
+                                                print t, s, p, hexa, hepta, o
