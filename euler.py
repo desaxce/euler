@@ -1266,3 +1266,33 @@ def spiral_primes():
         index+=4*(i+1)
         i+=2
 
+def is_prime_pair(n, m):
+    ns=list(n)
+    ns.extend(m)
+    nm=int(''.join(ns))
+    if not is_prime(nm):
+        return False
+    ms=list(m)
+    ms.extend(n)
+    mn=int(''.join(ms))
+    if not is_prime(mn):
+        return False
+    return True
+    
+def prime_pair_sets():
+    primes=[]
+    cnt=0
+    for i in xrange(10000):
+        if is_prime(i):
+            primes.append(list(str(i)))
+    for i in primes:
+        print int(''.join(i))
+        for j in primes[primes.index(i):]:
+            if is_prime_pair(i, j):
+                for k in primes[primes.index(j)+1:]:
+                    if is_prime_pair(i, k) and is_prime_pair(j, k):
+                        for l in primes[primes.index(k)+1:]:
+                            if is_prime_pair(i, l) and is_prime_pair(j, l) and is_prime_pair(k, l):
+                                for m in primes[primes.index(l)+1:]:
+                                    if is_prime_pair(i, m) and is_prime_pair(j, m) and is_prime_pair(k, m) and is_prime_pair(l, m):
+                                        print int(''.join(i)), int(''.join(j)), int(''.join(k)),  int(''.join(l)), int(''.join(m))
