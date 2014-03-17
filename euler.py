@@ -1298,27 +1298,61 @@ def prime_pair_sets():
                                         print int(''.join(i)), int(''.join(j)), int(''.join(k)),  int(''.join(l)), int(''.join(m))
 
 def cyclical_figurate_numbers():
+
     triangle=[n*(n+1)/2 for n in xrange(45, 141)]
     square=[n**2 for n in xrange(32, 100)]
     pentagonal=[n*(3*n-1)/2 for n in xrange(26, 82)]
     hexagonal=[n*(2*n-1) for n in xrange(23, 71)]
     heptagonal=[n*(5*n-3)/2 for n in xrange(21, 64)]
     octagonal=[n*(3*n-2) for n in xrange(19, 59)]
-    for t in triangle:
-        for s in square:
-            lt=list(str(t))
-            ls=list(str(s))
-            if lt[len(lt)-2:len(lt)]==ls[0:2]:
-                for p in pentagonal:
-                    ps=list(str(p))
-                    if ls[len(ls)-2:len(ls)]==ps[0:2]:
-                        for hexa in hexagonal:
-                            hexas=list(str(hexa))
-                            if ps[len(ps)-2:len(ps)]==hexas[0:2]:
-                                for hepta in heptagonal:
-                                    heptas=list(str(hepta))
-                                    if hexas[len(hexas)-2:len(hexas)]==heptas[0:2]:
-                                        for o in octagonal:
-                                            os=list(str(o))
-                                            if heptas[len(heptas)-2:len(heptas)]==os[0:2]:
-                                                print t, s, p, hexa, hepta, o
+
+    total=[triangle, square, pentagonal, hexagonal, heptagonal, octagonal]
+    for tot in list(permutations(total)): 
+        for t in tot[0]:
+            for s in tot[1]:
+                lt=list(str(t))
+                ls=list(str(s))
+                if lt[2:4]==ls[0:2]:
+                    for p in tot[2]:
+                        ps=list(str(p))
+                        if ls[2:4]==ps[0:2]:
+                            for hexa in tot[3]:
+                                hexas=list(str(hexa))
+                                if ps[2:4]==hexas[0:2]:
+                                    for hepta in tot[4]:
+                                        heptas=list(str(hepta))
+                                        if hexas[2:4]==heptas[0:2]:
+                                            for o in tot[5]:
+                                                os=list(str(o))
+                                                if heptas[2:4]==os[0:2] and os[2:4]==lt[0:2]:
+                                                    return t+s+p+hexa+hepta+o
+
+def is_same_digits(a, b):
+    db_a=list(Counter(list(str(a))).items())
+    db_b=list(Counter(list(str(b))).items())
+    db_a.sort()
+    db_b.sort()
+    return db_a==db_b
+
+def cubic_permutations():
+    cubes=[i**3 for i in xrange(1, 100000)]
+    for c in cubes:
+        db_c=list(Counter(list(str(c))).items())
+        db_c.sort()
+        for d in cubes[cubes.index(c)+1: int(pow(10**(len(str(c))), 1.0/3))+1]:
+            db_d=list(Counter(list(str(d))).items())
+            db_d.sort()
+            if db_c==db_d: 
+                for e in cubes[cubes.index(d)+1: int(pow(10**(len(str(c))), 1.0/3))+1]:
+                    db_e=list(Counter(list(str(e))).items())
+                    db_e.sort() 
+                    if db_e==db_c:
+                        for f in cubes[cubes.index(e)+1: int(pow(10**(len(str(c))), 1.0/3))+1]:
+                            db_f=list(Counter(list(str(f))).items())
+                            db_f.sort() 
+                            if db_f==db_c:
+                                for g in cubes[cubes.index(f)+1: int(pow(10**(len(str(c))), 1.0/3))+1]:
+                                    db_g=list(Counter(list(str(g))).items())
+                                    db_g.sort() 
+                                    if db_g==db_c:
+                                        print c, d, e, f, g
