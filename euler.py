@@ -1216,7 +1216,7 @@ def powerful_digit_sum(n):
     return resultat 
 
 def reduce(a, b):
-    d=gcd(a, b)[0]
+    d=gcd(abs(a), abs(b))[0]
     return [a/d, b/d]
 
 global_array_fractions_development_two=[[] for i in xrange(1000)]
@@ -1369,38 +1369,55 @@ def powerful_digit_counts():
                 cnt+=1
     return cnt
 
+
 def fraction_development_root(n):
     resultat=[0, []]
     l=[]
-    resultat[0]=int(sqrt(n))
-    first=1.0/(sqrt(n)-resultat[0])
-    current=1.0/(first-int(first))
-    l.append(int(current))
-    while abs(current-first)>0.00001:
-        current-=int(current)
-        current=1.0/current
-        l.append(int(current))
+    first=[[1, 1], [0, 1]]
+    current=[[], []]
+    current[0]=list(first[0])
+    current[1]=list(first[1])
+    e=int(sqrt(n)*first[0][0]*1.0/first[0][1]+1.0*first[1][0]/first[1][1])
+    current[1][0]-=current[1][1]*e
+    resultat[0]=e
 
+    a_1=current[0][0]
+    a_2=current[0][1]
+    b_1=current[1][0]
+    b_2=current[1][1]
+    current[0]=reduce(a_1*a_2**2*b_2**2, a_2*(a_1**2*b_2**2*n-a_2**2*b_1**2))
+    current[1]=reduce(b_1*a_2**2*b_2**2, -b_2*(a_1**2*b_2**2*n-a_2**2*b_1**2))
+    first[0]=list(current[0])
+    first[1]=list(current[1])
+    e=int(sqrt(n)*current[0][0]*1.0/current[0][1]+1.0*current[1][0]/current[1][1])
+    l.append(e)
+    current[1][0]-=current[1][1]*e
+    a_1=current[0][0]
+    a_2=current[0][1]
+    b_1=current[1][0]
+    b_2=current[1][1]
+    current[0]=reduce(a_1*a_2**2*b_2**2, a_2*(a_1**2*b_2**2*n-a_2**2*b_1**2))
+    current[1]=reduce(b_1*a_2**2*b_2**2, -b_2*(a_1**2*b_2**2*n-a_2**2*b_1**2))
+    while current[0][0]*1.0/current[0][1]!=1.0*first[0][0]/first[0][1] or current[1][0]*1.0/current[1][1]!=1.0*first[1][0]/first[1][1]:
+        e=int(sqrt(n)*current[0][0]*1.0/current[0][1]+1.0*current[1][0]/current[1][1])
+        l.append(e)
+        current[1][0]-=current[1][1]*e
+        a_1=current[0][0]
+        a_2=current[0][1]
+        b_1=current[1][0]
+        b_2=current[1][1]
+        current[0]=reduce(a_1*a_2**2*b_2**2, a_2*(a_1**2*b_2**2*n-a_2**2*b_1**2))
+        current[1]=reduce(b_1*a_2**2*b_2**2, -b_2*(a_1**2*b_2**2*n-a_2**2*b_1**2))
 
-    resultat[1]=l
+    resultat[1]=l 
     return resultat
-
-def size_fraction_development_root(n):
-    cnt=1
-    first=1.0/(sqrt(n)-int(sqrt(n)))
-    current=1.0/(first-int(first))
-    while abs(current-first)>0.001:
-        current-=int(current)
-        current=1.0/current
-        cnt+=1
-
-    return cnt
 
 def odd_period_square_roots():
     cnt=0
     squares=[n**2 for n in xrange(101)]
     for n in xrange(10001):
-        print n
-        if not n in squares and size_fraction_development_root(n)%2==1:
+        if not n in squares and len(fraction_development_root(n)[1])%2==1:
             cnt+=1
     return cnt
+
+
