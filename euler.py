@@ -3,6 +3,7 @@ from math import log
 from itertools import combinations
 from itertools import permutations
 from collections import Counter
+from decimal import *
 import rlcompleter, readline
 readline.parse_and_bind('tab:complete')
 
@@ -1356,3 +1357,50 @@ def cubic_permutations():
                                     db_g.sort() 
                                     if db_g==db_c:
                                         print c, d, e, f, g
+
+def powerful_digit_counts():
+    cnt=0
+    for i in xrange(1, 100):
+        a=0
+        while len(str(a**i))<=i:
+            a+=1
+            if len(str(a**i))==i:
+                print a**i, i
+                cnt+=1
+    return cnt
+
+def fraction_development_root(n):
+    resultat=[0, []]
+    l=[]
+    resultat[0]=int(sqrt(n))
+    first=1.0/(sqrt(n)-resultat[0])
+    current=1.0/(first-int(first))
+    l.append(int(current))
+    while abs(current-first)>0.00001:
+        current-=int(current)
+        current=1.0/current
+        l.append(int(current))
+
+
+    resultat[1]=l
+    return resultat
+
+def size_fraction_development_root(n):
+    cnt=1
+    first=1.0/(sqrt(n)-int(sqrt(n)))
+    current=1.0/(first-int(first))
+    while abs(current-first)>0.001:
+        current-=int(current)
+        current=1.0/current
+        cnt+=1
+
+    return cnt
+
+def odd_period_square_roots():
+    cnt=0
+    squares=[n**2 for n in xrange(101)]
+    for n in xrange(10001):
+        print n
+        if not n in squares and size_fraction_development_root(n)%2==1:
+            cnt+=1
+    return cnt
