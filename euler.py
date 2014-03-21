@@ -1,10 +1,10 @@
 from math import sqrt
 from math import log
-from itertools import combinations
-from itertools import permutations
+from itertools import *
 from collections import Counter
 from decimal import *
 import rlcompleter, readline
+
 readline.parse_and_bind('tab:complete')
 
 """Global variable used to memoize the size of the Collatz sequences"""
@@ -15,18 +15,18 @@ global_collatz[1]=1
 global_lattices = [ [0 for i in xrange(21)] for j in xrange(21)]
 
 """Global variable used to read the pyramid"""
-f=open("pyramid.txt")
+f=open("triangle.txt")
 matrix = [[int(x) for x in line.split()] for line in f]
 mem = [[0 for i in xrange(len(matrix))] for j in xrange(len(matrix))]
 mem[0][0]=matrix[0][0]
 
 global_array_89 = [0 for i in xrange(1000)]
 
-def sum(n):
+def sum_to(n):
     return n*(n+1)/2
 
 def number_multiples(n):
-    return sum(n//5)*5 + sum(n//3)*3 - sum(n//15)*15
+    return sum_to(n//5)*5 + sum_to(n//3)*3 - sum_to(n//15)*15
 
 def even_sum_fibonacci(n):
     resultat=2
@@ -1420,4 +1420,118 @@ def odd_period_square_roots():
             cnt+=1
     return cnt
 
+global_array_fraction_development_e=[[] for i in xrange(101)]
+global_array_fraction_development_e[0]=[2, 1]
+frac_dev_e=[]
 
+def fraction_development_e(n):
+    global global_array_fraction_development_e
+    global frac_dev_e
+    if len(global_array_fraction_development_e[n])!=0:
+        return global_array_fraction_development_e[n]
+    else:
+        s=fraction_development_e(n-1)
+        t=[frac_dev_e[n-1]*s[0]+s[1], s[0]]
+        global_array_fraction_development_e[n]=t
+        return t
+
+def convergents_of_e():
+    global frac_dev_e 
+    global global_array_fraction_development_e 
+    for k in xrange(1, 36):
+        frac_dev_e.extend([1, 2*k, 1])
+    fraction_development_e(99)
+    l=global_array_fraction_development_e[99]
+    s=list(str(reduce(l[0], l[1])[0]))
+    somme=0
+    for x in s:
+        somme+=int(x)
+    return somme
+
+def convergs_gen(qgen, pgen=repeat(1)):
+    Np, Dp, N, D, = 0, 1, 1, 0
+    for q, p in izip(qgen, pgen):
+        Np, Dp, N, D = N, D, p*Np+q*N, p*Dp+q*D
+        yield N, D
+
+def e_gen():
+    def e_qgen():
+        yield 2
+        for k in count(1):
+            yield 1
+            yield 2*k
+            yield 1
+    return convergs_gen(e_qgen())
+
+def any_gen(l):
+    m=len(l[1])-1
+    def any_qgen():
+        yield l[0]
+        for k in count(1):
+            yield l[1][(k-1)%m]
+    return convergs_gen(any_qgen())
+
+def p65(n):
+    N, D = islice(e_gen(), n-1, n).next()
+    return sum(imap(int, str(N)))
+
+def any_p65(l, n):
+    N, D = islice(any_gen(l), n-1, n).next()
+    return N, D
+
+def diophantine_equation():
+    resultat=5
+    x=9
+    for i in xrange(2, 1001):
+        if int(sqrt(i))!=sqrt(i):
+            l=fraction_development_root(i)
+            m=len(l[1])
+            if m%2==1:
+                xs=any_p65(l, 2*m-1)
+            else:
+                xs=any_p65(l, m-1)
+            if xs[0]>x:
+                resultat=i
+                x=xs[0]
+    return resultat, x
+
+
+def max_path(i, j):
+    global matrix
+    if mem[i][j]!=0:
+        return mem[i][j]
+    elif j==0:
+        mem[i][j]=matrix[i][j]+max_path(i-1, j)
+        return mem[i][j]
+    elif j==len(matrix[i])-1:
+        mem[i][j]=matrix[i][j]+max_path(i-1, j-1)
+        return mem[i][j]
+    else:
+        mem[i][j]=matrix[i][j]+max(max_path(i-1, j-1), max_path(i-1, j))
+        return mem[i][j]
+        
+
+def maximum_path_sum_2():
+    global matrix
+    size = len(matrix[len(matrix)-1])
+    resultat=0
+    for i in xrange(size):
+        s=max_path(size-1, i)
+        if resultat<s:
+            resultat=s
+    return resultat
+
+def totient_maximum():
+    a=2
+    i=2
+    resultat=1
+    while a<=1000000:
+        resultat*=1.0*i/(i-1)
+        i+=1
+        while not is_prime(i):
+            i+=1
+        a*=i
+    return resultat, a/i
+
+def totient_permutation():
+    return 0 
