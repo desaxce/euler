@@ -1535,3 +1535,32 @@ def totient_maximum():
 
 def totient_permutation():
     return 0 
+
+def magic_5_gon_ring():
+    l=set([i for i in xrange(1, 11)])
+    l.discard(10)
+    for a in xrange(13, 17):
+        for a1 in xrange(1, 10):
+            for a2 in xrange(1, 10):
+                if a2!=a1 and a1+a2+10==a:
+                    for a3 in xrange(1, 10):
+                        if a3 not in [a1, a2]:
+                            for a4 in xrange(1, 10):
+                                if a4 not in [a1, a2, a3]:
+                                    for a5 in xrange(1, 10):
+                                        if a5 not in [a1, a2, a3, a4]:
+                                            ls=set(l)
+                                            ls.discard(a1)
+                                            ls.discard(a2)
+                                            ls.discard(a3)
+                                            ls.discard(a4)
+                                            ls.discard(a5)
+                                            ls.discard(a-(a2+a3))
+                                            ls.discard(a-(a3+a4))
+                                            ls.discard(a-(a4+a5))
+                                            ls.discard(a-(a5+a1))
+                                            if len(ls)==0:
+                                                print a, a1, a2, a3, a4, a5
+                                                print a, a-(a1+a2), a-(a2+a3), a-(a3+a4), a-(a4+a5), a-(a5+a1)
+
+
