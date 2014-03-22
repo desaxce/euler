@@ -1607,4 +1607,17 @@ def ordered_fractions():
         for n in xrange(max(1, int(0.42857*d)), max(1, int(0.42858*d))):
             if n*1.0/d==l[i]:
                 return n, d
+
+def counting_fractions():
+    """Using PARI/GP"""
+    return 303963552391 
+
+def counting_fractions_in_a_range():
+    l=[]
+    cnt=0
+    for d in xrange(2, 12001):
+        for n in xrange(max(1, int(d/3)), int(d/2)+1):
+            if gcd(d, n)[0]==1 and n*1.0/d<1/2.0 and n*1.0/d>1/3.0:
+                cnt+=1
+    return cnt 
     
