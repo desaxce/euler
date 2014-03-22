@@ -1533,9 +1533,6 @@ def totient_maximum():
         a*=i
     return resultat, a/i
 
-def totient_permutation():
-    return 0 
-
 def magic_5_gon_ring():
     l=set([i for i in xrange(1, 11)])
     l.discard(10)
@@ -1563,4 +1560,34 @@ def magic_5_gon_ring():
                                                 print a, a1, a2, a3, a4, a5
                                                 print a, a-(a1+a2), a-(a2+a3), a-(a3+a4), a-(a4+a5), a-(a5+a1)
 
+def totient_function(n):
+    factors=factor_concat(n)
+    resultat=1
+    for f in factors:
+        resultat*=f[0]**f[1] -f[0]**(f[1]-1) 
+    return resultat
+
+def totient_permutation():
+    primes=[]
+    l=[i for i in xrange(10000)]
+    for p in l:
+        if is_prime(p):
+            primes.append(p)
+    print "done"
+    n=1
+    ratio=2
+    for i in primes:
+        for j in primes[primes.index(i):10**7]:
+            c=i*j
+            if c<10**7:
+                phi=totient_function(c)
+                if ''.join(sorted(list(str(phi))))==''.join(sorted(list(str(c)))):
+                    if i==2609 and j==2693:
+                        print c, c*1.0/phi
+
+                    if c*1.0/phi<ratio:
+                        n=c
+                        ratio=c*1.0/phi
+                        print c, ratio
+    return n, ratio
 
