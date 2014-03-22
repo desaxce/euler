@@ -1591,3 +1591,20 @@ def totient_permutation():
                         print c, ratio
     return n, ratio
 
+def ordered_fractions():
+    l=[]
+    for d in xrange(2, 1000001):
+        print d
+        for n in xrange(max(1, int(0.42857*d)), max(1, int(0.42858*d))):
+            if gcd(d, n)[0]==1:
+                l.append(n*1.0/d)
+    l.append(3*1.0/7)
+    l.sort()
+    i=l.index(3*1.0/7)+1
+    print i
+    print l[i]
+    for d in xrange(2, 1000001):
+        for n in xrange(max(1, int(0.42857*d)), max(1, int(0.42858*d))):
+            if n*1.0/d==l[i]:
+                return n, d
+    
