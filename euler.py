@@ -1,5 +1,4 @@
-from math import sqrt
-from math import log
+from math import *
 from itertools import *
 from collections import Counter
 from decimal import *
@@ -880,14 +879,14 @@ def is_89(n):
             square+=int(s)**2
         if square==1:
             if n<len(global_array_89):
-                global_array_89[n]==1
+                global_array_89[n]=1
             return False
-        elif square==89:
+        elif square in [89, 145, 42, 20, 4, 16, 37, 58]:
             if n<len(global_array_89):
-                global_array_89[n]==-1
+                global_array_89[n]=-1
             return True
         else:
-            f==is_89(square)
+            f=is_89(square)
             if n<len(global_array_89):  
                 if f:
                     global_array_89[n]=-1
@@ -898,16 +897,16 @@ def is_89(n):
 def square_digit_chains():
     cnt=0
     global global_array_89
-    for i in xrange(1, 10000):
+    for i in xrange(1, 1000):
         is_89(i)
     for i in xrange(1, 10000000):
+        if i%100000==0:
+            print i, cnt
         l=list(str(i))
         square=0
         for s in l:
             square+=int(s)**2
-        print square, global_array_89[square]
         if global_array_89[square]==-1:
-            print i
             cnt+=1
     return cnt
 
@@ -1595,12 +1594,12 @@ def ordered_fractions():
     l=[]
     for d in xrange(2, 1000001):
         print d
-        for n in xrange(max(1, int(0.42857*d)), max(1, int(0.42858*d))):
+        for n in xrange(max(1, int(0.42856*d)), max(1, int(0.42859*d))):
             if gcd(d, n)[0]==1:
                 l.append(n*1.0/d)
     l.append(3*1.0/7)
     l.sort()
-    i=l.index(3*1.0/7)+1
+    i=l.index(3*1.0/7)-1
     print i
     print l[i]
     for d in xrange(2, 1000001):
@@ -1609,15 +1608,38 @@ def ordered_fractions():
                 return n, d
 
 def counting_fractions():
-    """Using PARI/GP"""
+    """Using PARI/GP and taylor!"""
     return 303963552391 
 
-def counting_fractions_in_a_range():
+def counting_fractions_in_a_range(s):
     l=[]
     cnt=0
-    for d in xrange(2, 12001):
+    for d in xrange(2, s+1):
         for n in xrange(max(1, int(d/3)), int(d/2)+1):
             if gcd(d, n)[0]==1 and n*1.0/d<1/2.0 and n*1.0/d>1/3.0:
                 cnt+=1
     return cnt 
-    
+
+def is_sixty_factorial_chain(n):
+    l=[]
+    s=n
+    l.append(s)
+    while len(l)<=60:
+        s=sum(imap(factorial, list(imap(int, list(str(s))))))
+        if s in l and len(l)==60:
+            return True
+        elif s in l and len(l)!=60:
+            return False
+        l.append(s)
+    return False
+            
+
+
+def digit_factorial_chains():
+    s=set([i for i in xrange(10**6)])
+    cnt=0
+    for i in s:
+        if is_sixty_factorial_chain(i):
+            print i
+            cnt+=1
+    return cnt  
