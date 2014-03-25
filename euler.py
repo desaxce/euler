@@ -1644,29 +1644,32 @@ def digit_factorial_chains():
             cnt+=1
     return cnt  
 
-def moebius(n):
-    n = abs(int(n))
-    if n < 2:
-        return n
-    factors = []
-    for p in xrange(2, n+1):
-        if not (n % p):
-            if not (n % p**2):
-                return 0
-            if not sum(p % f for f in factors):
-                factors.append(p)
-    return (-1)**len(factors)
+global_mobius=[2 for i in xrange(20000001)]
+global_mobius[1]=1
 
-def mobius(n):
-    result, i = 1, 2
-    while n >= i:   
-        if n % i == 0:
-            n = n / i
-            if n % i == 0:
-                return 0
-            result = -result
-        i = i + 1
-    return result
+def fill_mobius(n):
+    s=set([i for i in xrange(2, n+1)])
+    global global_mobius
+    l=[2*i+1 for i in xrange(n/2)]
+    primes=[2]
+    for p in l:
+        if p%100000==0:
+            print p
+        if is_prime(p):
+            primes.append(p)
+    print "done priming"
+
+    for i in xrange(2, n+1): 
+        if i in s:
+            a=0
+            while i%primes[a]!=0:
+                a+=1
+            p=primes[a]
+
+            if (i/p)%p==0:
+                global_mobius[i]==0
+            else:
+                global_mobius[i]=-global_mobius[i/p]
 
 def main():
     somme=0
