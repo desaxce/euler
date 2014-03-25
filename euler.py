@@ -1643,3 +1643,33 @@ def digit_factorial_chains():
             print i
             cnt+=1
     return cnt  
+
+def moebius(n):
+    n = abs(int(n))
+    if n < 2:
+        return n
+    factors = []
+    for p in xrange(2, n+1):
+        if not (n % p):
+            if not (n % p**2):
+                return 0
+            if not sum(p % f for f in factors):
+                factors.append(p)
+    return (-1)**len(factors)
+
+def mobius(n):
+    result, i = 1, 2
+    while n >= i:   
+        if n % i == 0:
+            n = n / i
+            if n % i == 0:
+                return 0
+            result = -result
+        i = i + 1
+    return result
+
+def main():
+    somme=0
+    for i in xrange(20000000):
+        somme+=moebius(i)
+    print somme
