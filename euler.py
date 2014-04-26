@@ -1676,3 +1676,129 @@ def main():
     for i in xrange(20000000):
         somme+=moebius(i)
     print somme
+
+def build_primes(n):
+    a=1
+    cnt=0
+    result=[]
+    while cnt<n:
+        a+=1
+        while is_prime(a)==False:
+            a+=1
+        result.append(a)
+        cnt+=1
+    return result
+
+def build_composites(n):
+    a=1
+    cnt=0
+    result=[]
+    while cnt<n:
+        a+=1
+        while is_prime(a)==True:
+            a+=1
+        result.append(a)
+        cnt+=1
+    return result
+
+def digital_roots(n):
+    result=0
+    for digit in list(str(n)):
+        result+=int(digit)
+    while result>9:
+        result=digital_roots(result)
+    return result
+
+def cant_find(l, x):
+    if x not in l:
+        return True
+    return False
+
+def find_when(l, x):
+    return l.index(x)+1
+
+
+def superinteger(n):
+    p=build_primes(n)
+    c=build_composites(n)
+    p=map(digital_roots, p)
+    c=map(digital_roots, c)
+    print p
+    print c
+
+    result=""
+    i1=0
+    i2=0
+
+    while i1<n and i2<n:
+        a=p[i1]
+        b=c[i2]
+
+        if a==b:
+            i1+=1
+            i2+=1
+            result+=str(p[i1])
+        else:
+            if cant_find(c[i2:], a) and cant_find(p[i1:], b):
+                if a<b:
+                    while i1<n:
+                        result+=str(p[i1])
+                        i1+=1
+                    while i2<n:
+                        result+=str(c[i2])
+                        i2+=1
+                elif a>b:
+                    while i2<n:
+                        result+=str(c[i2])
+                        i2+=1
+                    while i1<n:
+                        result+=str(p[i1])
+                        i1+=1
+                    
+                return result
+            
+            if cant_find(c[i2:], a):
+                fwb=find_when(p[i1:], b)
+                result+=''.join(map(str, p[i1:i1+fwb]))
+                i1+=fwb
+                i2+=1
+
+            elif cant_find(p[i1:], b):
+                fwa=find_when(c[i2:], a)
+                result+=''.join(map(str, c[i2:i2+fwa]))
+                i2+=fwa
+                i1+=1
+            else:
+                
+            
+                fwa=find_when(c[i2:], a)
+                fwb=find_when(p[i1:], b)
+                if fwa<fwb:
+                    result+=''.join(map(str, c[i2:i2+fwa]))
+                    i2+=fwa
+                    i1+=1
+                if fwb<fwa:
+                    result+=''.join(map(str, p[i1:i1+fwb]))
+                    i1+=fwb
+                    i2+=1
+                if fwa==fwb:
+                    if a<b:
+                        result+=''.join(map(str, p[i1:i1+fwb]))
+                        i1+=fwb
+                        i2+=1
+                    if b<a:
+                        result+=''.join(map(str, c[i2:i2+fwa]))
+                        i2+=fwa
+                        i1+=1
+    print i1
+    print i2
+    if i2==n:
+        while i1<n:
+            result+=str(p[i1])
+            i1+=1
+    if i1==n:
+        while i2<n:
+            result+=str(c[i2])
+            i2+=1
+
+    return result
