@@ -7,3 +7,4 @@ clean:
 	rm -rf singular_integer_right_triangles
 	rm -rf path_sum_three_ways  
 	rm -rf counting_rectangles
+	rm -rf arranged_probability
