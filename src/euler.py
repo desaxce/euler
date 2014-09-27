@@ -1802,3 +1802,36 @@ def superinteger(n):
             i2+=1
 
     return result
+
+
+def the_last_question():
+    # We won't use it as we already have the dict
+    sentence = "thereisasyetinsufficientdataforameaningfulanswer"
+    n = 2 
+    d = dict({})
+    d[6]=2
+    d[5]=2
+    d[4]=3
+    d[3]=1
+    d[2]=1
+    d[1]=9
+    print call_last_question(n, d)
+
+def call_last_question(n, d):
+    if n==0:
+        return 1
+    result = factorial(n)
+    top = max(d.keys())
+    for i in xrange(top, 0, -1):
+        for j in xrange(min(i, n), 0, -1):
+            result_j=0
+            dp = d.copy()
+            if dp[i]==1:
+                dp.pop(i)
+            else:
+                dp[i]-=1
+            result_j += d[i]*call_last_question(n-j,dp)/factorial(j)
+        result*=result_j
+        d.pop(i)
+    return result
+
