@@ -12,3 +12,4 @@ clean:
 	rm -rf arranged_probability
 	rm -rf the_incenter_of_a_triangle
 	rm -rf bouncy_numbers
+	rm -rf concealed_square
