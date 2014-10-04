@@ -10,4 +10,5 @@ clean:
 	rm -rf path_sum_three_ways  
 	rm -rf counting_rectangles
 	rm -rf arranged_probability
-	rm -rf the_incenter_of_a_triangle       
+	rm -rf the_incenter_of_a_triangle
+	rm -rf bouncy_numbers
