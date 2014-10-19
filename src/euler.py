@@ -14,10 +14,12 @@ global_collatz[1]=1
 global_lattices = [ [0 for i in xrange(21)] for j in xrange(21)]
 
 """Global variable used to read the pyramid"""
-f=open("triangle.txt")
+""" Uncomment if working on the pyramid pb"""
+
+"""f=open("triangle.txt")
 matrix = [[int(x) for x in line.split()] for line in f]
 mem = [[0 for i in xrange(len(matrix))] for j in xrange(len(matrix))]
-mem[0][0]=matrix[0][0]
+mem[0][0]=matrix[0][0]"""
 
 global_array_89 = [0 for i in xrange(1000)]
 
@@ -1835,3 +1837,26 @@ def call_last_question(n, d):
         d.pop(i)
     return result
 
+"""Uncomment below if you want to test the problem 485. It takes quite some
+   to Python to create this array :("""
+""" global_divisors = [0 for i in xrange(100000001)] """
+
+def number_of_divisors_bis(j):
+	global global_divisors
+	if global_divisors[j]==0:
+		global_divisors[j] = number_of_divisors(j)
+	return global_divisors[j]
+
+def max_divisors(n, k):
+	maximum = number_of_divisors(n)
+	for j in xrange(n, n+k):
+		if number_of_divisors_bis(j)>maximum:
+			maximum = number_of_divisors(j)
+	return maximum
+
+def maximum_number_of_divisors(u, k):
+	result = 0
+	for n in xrange(1, u-k+2):
+		print n
+		result += max_divisors(n, k)
+	return result
