@@ -7,60 +7,61 @@
 
 using namespace std;
 
-unordered_map<uint64_t, uint64_t> p;
+vector<long> l;
 
-int N = 1000000;
+// For N = 10e12, requires ~60G swap memory (runs in 20 minutes)
+long N = 1000000000000L;
 
-// Special structure to avoid storing the value for every integer
-uint64_t get(uint64_t i) {
-	while (p.find(i)==p.end()) {
-		--i;
+// Returns the number of primes below i (using l and dichotomy)
+long get(long i) {
+	long a = 0;
+	long b = l.size()-1;
+	
+	while (abs(a-b) >1) {
+		long c = floor((a+b)/2);
+		if (l[c] <= i)
+			a = c;
+		else
+			b = c;
 	}
-	return p[i];
+	return a+1;
 }
 
-int main()
-{
-    // store the primes below 1000000
-    std::vector<int> l;
-    primesieve::generate_primes(N, &l);
-
-    primesieve::iterator pi;
-    uint64_t prime;
-	uint64_t count = 0;
-	int result = 0;
-
-    // iterate over the primes below 10^9
-    while ((prime = pi.next_prime()) < 1000000) {
-		p[prime] = ++count;
-	}
+int main() {
+    // store the primes below N/6
+    primesieve::generate_primes(N/6L, &l);
+	cout << "Done generating" << endl;
 	
-	//printf("%" PRIu64 "\n", l[0]);
-
+	long result = 0;
+	
 	// When only one prime:
 	result += get(floor(pow(N,1/7.)));
+	//cout << "result = " << result << endl;
 
 	// When two primes:
-	int q = l[0];
-	int i = 0;
-	while (N/pow(q,3.)>=2) {
+	long q = l[0];
+	long i = 0;
+	while (N/pow(q,3.)>=l[0]) {
 		result += get(floor(N/pow(q,3.)));
+		if (q <= floor(N/pow(q,3.)))
+			result--;
 		q = l[++i];
 	}
+	//cout << "result = " << result << endl;
 
 	// When three primes:
 	q = l[0];
 	i = 0;
-	while (q < pow(N, 1/2.)) {
-		int j = i+1;
-		int r = l[j];
-		while (r < pow(N, 1/2)) {
-			result += get(floor(N/(q*r)));
+	while (q <= pow(N, 1/3.)) {
+		long j = i+1;
+		long r = l[j];
+		while (r <= sqrt(N/q)) {
+			result+= get(floor(N/(q*r)))-get(r+1);
 			r = l[++j];
 		}
 		q = l[++i];
 	}
+	cout << "result = " << result+1 << endl;
 
-	printf("%d\n", result);
     return 0;
 }

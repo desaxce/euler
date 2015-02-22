@@ -1,4 +1,7 @@
-all: the_incenter_of_a_triangle
+all: eight_divisors
+
+eight_divisors: eight_divisors.cc
+	g++ $^ -std=c++11 -lprimesieve -o $@
 
 .PHONY: clean
 
@@ -13,3 +16,4 @@ clean:
 	rm -rf the_incenter_of_a_triangle
 	rm -rf bouncy_numbers
 	rm -rf concealed_square
+	rm -rf eight_divisors
