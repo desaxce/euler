@@ -12,7 +12,7 @@ int main() {
     do {
         n++;
         long double y = 2.0*n*(n-1);
-        x = (double) 1/2. + (double) sqrt(y+1.0)/2.;
+        x = (long double) 1/2. + (long double) sqrt(y+1.0)/2.;
     } while(x*1.0/n*((x-1)*1.0/(n-1))!=0.5);
     printf("n = %Ld and x = %Lf\n", n, x);
 
