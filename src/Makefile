@@ -1,6 +1,6 @@
-all: eight_divisors
+all: semiprimes
 
-eight_divisors: eight_divisors.cc
+%: %.cc
 	g++ $^ -std=c++11 -lprimesieve -o $@
 
 .PHONY: clean
@@ -17,3 +17,4 @@ clean:
 	rm -rf bouncy_numbers
 	rm -rf concealed_square
 	rm -rf eight_divisors
+	rm -rf semiprimes
