@@ -1,4 +1,4 @@
-all: semiprimes
+all: bidirection
 
 %: %.cc
 	g++ $^ -std=c++11 -lprimesieve -o $@
@@ -18,3 +18,4 @@ clean:
 	rm -rf concealed_square
 	rm -rf eight_divisors
 	rm -rf semiprimes
+	rm -rf bidirection
