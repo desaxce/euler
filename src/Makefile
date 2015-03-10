@@ -19,3 +19,6 @@ clean:
 	rm -rf eight_divisors
 	rm -rf semiprimes
 	rm -rf bidirection
+	rm -rf idempotents
+	rm -rf palindromic_sums
+	rm -rf abc-hits
