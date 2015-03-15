@@ -1,4 +1,4 @@
-all: bidirection
+all: sum_of_squares_of_divisors
 
 %: %.cc
 	g++ $^ -std=c++11 -lprimesieve -o $@
