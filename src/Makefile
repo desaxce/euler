@@ -1,4 +1,4 @@
-all: dice_game
+all: digital_root_clocks
 
 %: %.cc
 	g++ $^ -std=c++11 -lprimesieve -o $@
@@ -23,3 +23,4 @@ clean:
 	@rm -rf palindromic_sums
 	@rm -rf abc-hits
 	@rm -rf dice_game
+	@rm -rf digital_root_clocks
