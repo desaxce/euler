@@ -1,4 +1,4 @@
-all: digital_root_clocks
+all: bitwise_or_on_random_integers
 
 %: %.cc
 	g++ $^ -std=c++11 -lprimesieve -o $@
