@@ -1,7 +1,10 @@
-all: bitwise_or_on_random_integers
+CFLAGS=-std=c++11
+LFLAGS=-lprimesieve -I.
+
+all: problem_508
 
 %: %.cc
-	g++ $^ -std=c++11 -lprimesieve -o $@
+	g++ $(CFLAGS) $(LFLAGS) -o $@ $^
 
 .PHONY: clean
 
@@ -24,3 +27,4 @@ clean:
 	@rm -rf abc-hits
 	@rm -rf dice_game
 	@rm -rf digital_root_clocks
+	@rm -rf problem_508
