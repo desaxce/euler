@@ -1,22 +1,16 @@
 #include <pe.h>
+#define pb push_back
 
 int N = 2011;
-map<string, int> memoiser;
 
 int rotational_cost(string s, char c) {
-	map<string, int>::iterator it = memoiser.find(s);
-	if (it!=memoiser.end()) {
-		return it->second;
-	}
-	else if (s.size()==2) {
-		size_t pos = s.find(c);
+	size_t pos = s.find(c);
+	if (s.size()==2) {
 		if (pos==1)
 			return 1;
 		return 0;
 	}
 	else {
-		size_t pos = s.find(c);
-		string ss = s;
 		if (pos==0) { // si _c_ est au debut
 			return rotational_cost(s.substr(1), ++c);
 		}
@@ -25,13 +19,9 @@ int rotational_cost(string s, char c) {
 			return 1+rotational_cost(s.substr(1), ++c);
 		}
 		else { // si _c_ est au milieu
-			//cout << s << endl;
 			reverse(s.begin()+pos, s.end());
-			//cout << s << endl;
 			reverse(s.begin(), s.end());
-			//cout << s << endl;
-			memoiser[ss] = 2+rotational_cost(s.substr(1), ++c);
-			return memoiser[ss];
+			return 2+rotational_cost(s.substr(1), ++c);
 		}
 	}
 }
@@ -39,25 +29,20 @@ int rotational_cost(string s, char c) {
 int main() {
 	string abcdefghijk("ABCDEFGHIJK");
 	map<string, int> arrangements;
+	vector<string> res;
+
 	int maximum = 0;
 	do {
 		arrangements[abcdefghijk] = rotational_cost(abcdefghijk, 'A');
 		if (arrangements[abcdefghijk]>maximum) {
 			maximum = arrangements[abcdefghijk];
+			res.clear();
+		}
+		if (arrangements[abcdefghijk]==maximum) {
+			res.pb(abcdefghijk);
 		}
 	} while (next_permutation(abcdefghijk.begin(), abcdefghijk.end()));
-	cout << "Done" << endl;
-
-	int count = 0;
-	cout << "Maximum = " << maximum << endl;
-	for (map<string, int>::const_iterator it = arrangements.begin(); it!=arrangements.end(); ++it) {
-		if (it->second==maximum) {
-			count++;
-			if (count==N) {
-				cout << it->first << " : " << it->second << endl;
-				return 0;
-			}
-		}
-	}
+	
+	cout << res[N-1] << " : " << maximum << endl;
 	return 0;
 }
