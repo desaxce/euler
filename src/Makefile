@@ -1,7 +1,7 @@
 CFLAGS=-std=c++11
 LFLAGS=-lprimesieve -I.
 
-all: problem_508
+all: maximix_arrangements
 
 %: %.cc
 	g++ $(CFLAGS) $(LFLAGS) -o $@ $^
@@ -28,3 +28,4 @@ clean:
 	@rm -rf dice_game
 	@rm -rf digital_root_clocks
 	@rm -rf problem_508
+	@rm -rf maximix_arrangements
