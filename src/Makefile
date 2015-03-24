@@ -1,10 +1,10 @@
 CFLAGS=-std=c++11
-LFLAGS=-lprimesieve -I.
+LFLAGS=-lprimesieve -L. -I.
 
 all: idempotents
 
 %: %.cc
-	g++ $(CFLAGS) $(LFLAGS) -o $@ $^
+	g++ $^ $(CFLAGS) $(LFLAGS) -o $@
 
 .PHONY: clean
 
