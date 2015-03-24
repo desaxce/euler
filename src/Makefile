@@ -1,7 +1,7 @@
 CFLAGS=-std=c++11
 LFLAGS=-lprimesieve -I.
 
-all: maximix_arrangements_better
+all: idempotents
 
 %: %.cc
 	g++ $(CFLAGS) $(LFLAGS) -o $@ $^
