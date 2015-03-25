@@ -1,7 +1,7 @@
 CFLAGS=-std=c++11
 LFLAGS=-lprimesieve -L. -I.
 
-all: idempotents
+all: double_pandigital_number_divisible_by_11
 
 # Careful about the order of parameters in the below line;
 # the .cc file must come first, else we got a linking issue.
@@ -31,3 +31,4 @@ clean:
 	@rm -rf digital_root_clocks
 	@rm -rf problem_508
 	@rm -rf maximix_arrangements
+	@rm -rf double_pandigital_number_divisible_by_11
