@@ -3,6 +3,8 @@ LFLAGS=-lprimesieve -L. -I.
 
 all: idempotents
 
+# Careful about the order of parameters in the below line;
+# the .cc file must come first, else we got a linking issue.
 %: %.cc
 	g++ $^ $(CFLAGS) $(LFLAGS) -o $@
 
