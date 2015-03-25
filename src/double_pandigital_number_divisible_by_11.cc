@@ -10,7 +10,6 @@ ll repetitions(vector<ll> v) {
 	return v.size()-s.size();
 }
 
-// Computes n!
 ll factorial(ll n) {
   return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
 }
@@ -27,17 +26,6 @@ ll right_below(ld x) {
 	return result;
 }
 
-// Somehow I think this function does exactly the same as STL ceil()
-ll right_uptop(ld x) {
-	ll result;
-	if (floor(x)==x) {
-		result = floor(x);
-	}
-	else {
-		result = floor(x)+1;
-	}
-	return result;
-}
 vector<ll> integer_to_vector(ll n, ll c) {
 	vector<ll> result;
 
@@ -68,12 +56,13 @@ vector<ll> integer_to_vector(ll n, ll c) {
 
 map<ll, ll> integer_to_map(ll n, ll c) {
 	map<ll, ll> result;
-	for (ll k = 0; k < n/2; ++k) {
+
+	for (ll k = 0; k < right_below(n/2.); ++k) {
 		if ((c & (1 << (2*k))) != 0) {
-			result[n/2-k-1]++;
+			result[ceil(n/2.)-k-1]++;
 		}
 		if ((c & (1 << (2*k+1))) != 0) {
-			result[n/2-k-1]++;
+			result[ceil(n/2.)-k-1]++;
 		}
 	}
 
@@ -92,6 +81,7 @@ map<ll, ll> integer_to_map(ll n, ll c) {
 	}
 	return result;
 }
+
 // Dans cette fonction, n represente le nombre de digits (dans notre cas
 // c'est soit 20 (double pandigital), soit 19 (quand on retire un zero).
 ll number_of_pandigital_number_divisible_by_11(ll n) {
@@ -105,6 +95,9 @@ ll number_of_pandigital_number_divisible_by_11(ll n) {
 	ll k = n/2;
 
 	// Gosper's hack to loop over all subsets of size k.
+	// It's not so good to loop over integers; makes it hard to convert into
+	// a list of integers afterwards. TODO: Find a way to list all subsets of
+	// 10 elements of a list in C++.
 	ll c = (1<<k)-1;
 	vector<map<ll, ll> > pan;
 
@@ -119,11 +112,6 @@ ll number_of_pandigital_number_divisible_by_11(ll n) {
 		// include <numeric> to use accumulate
 		ll tmp = 90 - 2*accumulate(aplus.begin(), aplus.end(), 0);
 		if (tmp%11==0 and find(pan.begin(), pan.end(), cur) == pan.end()) { // critere de divisibilite par 11
-			//const int cn = 20;
-			//cout << "c = " << bitset<cn>(c) << endl;
-			//for (ll tmp : aplus)
-				//cout << tmp << " ";
-			//cout << endl << endl;
 
 			ll nplus = repetitions(aplus);
 			ll nmoins = nplus;
@@ -141,7 +129,6 @@ ll number_of_pandigital_number_divisible_by_11(ll n) {
 		ll a = c&-c, b = c+a;
 		c = (c^b)/4/a|b;
 	}
-	//cout << pan.size() << endl;
 	return result;
 }
 
