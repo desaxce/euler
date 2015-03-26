@@ -1,7 +1,7 @@
 CFLAGS=-std=c++11
 LFLAGS=-lprimesieve -L. -I.
 
-all: double_pandigital_number_divisible_by_11
+all: right_triangles_with_integer_coordinates
 
 # Careful about the order of parameters in the below line;
 # the .cc file must come first, else we got a linking issue.
@@ -32,3 +32,4 @@ clean:
 	@rm -rf problem_508
 	@rm -rf maximix_arrangements
 	@rm -rf double_pandigital_number_divisible_by_11
+	@rm -rf right_triangles_with_integer_coordinates
