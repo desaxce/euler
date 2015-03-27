@@ -40,14 +40,13 @@ nb(i, r)=
 			);
 		);
 	);
-			
 }
 
 main()=
 {
 	local(result, i);
 	result = 0;
-	for (i=1, N, 
+	for (i=1, N,
 		result += nb(i, 1); \\ position i, rang 1
 	);
 	return (result/N);
