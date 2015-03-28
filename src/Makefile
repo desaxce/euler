@@ -1,7 +1,7 @@
 CFLAGS=-std=c++11
 LFLAGS=-lprimesieve -L. -I.
 
-all: right_triangles_with_integer_coordinates
+all: cyclic_number
 
 # Careful about the order of parameters in the below line;
 # the .cc file must come first, else we got a linking issue.
