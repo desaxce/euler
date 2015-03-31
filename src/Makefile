@@ -1,7 +1,7 @@
 CFLAGS=-std=c++11
 LFLAGS=-lprimesieve -L. -I.
 
-all: diophantine_reciprocals
+all: non-bouncy_numbers
 
 # Careful about the order of parameters in the below line;
 # the .cc file must come first, else we got a linking issue.
@@ -35,3 +35,4 @@ clean:
 	@rm -rf right_triangles_with_integer_coordinates
 	@rm -rf prime_connection
 	@rm -rf diophantine_reciprocals
+	@rm -rf non-bouncy_numbers
