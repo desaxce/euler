@@ -13,8 +13,6 @@
 #include <numeric> // accumulate (to sum all elements in vector)
 #include <bitset>
 
-#define MAX(a, b)	((a) > (b)) ? (a): (b)
-#define MIN(a, b)	((a) > (b)) ? (b): (a)
 #define ll long long
 #define ld long double
 #define pb push_back
