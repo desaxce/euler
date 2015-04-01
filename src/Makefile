@@ -1,7 +1,7 @@
 CFLAGS=-std=c++11
 LFLAGS=-lprimesieve -L. -I.
 
-all: non-bouncy_numbers
+all: pseudo-fortunate_numbers
 
 # Careful about the order of parameters in the below line;
 # the .cc file must come first, else we got a linking issue.
@@ -36,3 +36,4 @@ clean:
 	@rm -rf prime_connection
 	@rm -rf diophantine_reciprocals
 	@rm -rf non-bouncy_numbers
+	@rm -rf pseudo-fortunate_numbers

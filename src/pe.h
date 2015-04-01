@@ -12,6 +12,7 @@
 #include <algorithm> // reverse string, next_permutation
 #include <numeric> // accumulate (to sum all elements in vector)
 #include <bitset>
+#include <time.h>
 
 #define ll long long
 #define ld long double
