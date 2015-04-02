@@ -1,7 +1,7 @@
 CFLAGS=-std=c++11
 LFLAGS=-lprimesieve -L. -I.
 
-all: pseudo-fortunate_numbers
+all: sliding_game
 
 # Careful about the order of parameters in the below line;
 # the .cc file must come first, else we got a linking issue.
@@ -37,3 +37,4 @@ clean:
 	@rm -rf diophantine_reciprocals
 	@rm -rf non-bouncy_numbers
 	@rm -rf pseudo-fortunate_numbers
+	@rm -rf sliding_game
