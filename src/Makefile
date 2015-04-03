@@ -1,7 +1,7 @@
 CFLAGS=-std=c++11
 LFLAGS=-lprimesieve -L. -I.
 
-all: sliding_game
+all: swapping_counters
 
 # Careful about the order of parameters in the below line;
 # the .cc file must come first, else we got a linking issue.
@@ -38,3 +38,4 @@ clean:
 	@rm -rf non-bouncy_numbers
 	@rm -rf pseudo-fortunate_numbers
 	@rm -rf sliding_game
+	@rm -rf swapping_counters
