@@ -13,6 +13,7 @@
 #include <numeric> // accumulate (to sum all elements in vector)
 #include <bitset>
 #include <time.h>
+#include <utility> // std::pair
 
 #define ll long long
 #define ld long double

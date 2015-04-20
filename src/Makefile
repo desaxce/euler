@@ -1,7 +1,7 @@
 CFLAGS=-std=c++11
 LFLAGS=-lprimesieve -L. -I.
 
-all: gaussian_integers
+all: tangent_circles
 
 # Careful about the order of parameters in the below line;
 # the .cc file must come first, else we got a linking issue.
@@ -40,3 +40,4 @@ clean:
 	@rm -rf sliding_game
 	@rm -rf swapping_counters
 	@rm -rf gaussian_integers
+	@rm -rf tangent_circles
