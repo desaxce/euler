@@ -1,7 +1,7 @@
 CFLAGS=-std=c++11
 LFLAGS=-lprimesieve -L. -I.
 
-all: tangent_circles
+all: divisor_nim
 
 # Careful about the order of parameters in the below line;
 # the .cc file must come first, else we got a linking issue.
@@ -41,3 +41,4 @@ clean:
 	@rm -rf swapping_counters
 	@rm -rf gaussian_integers
 	@rm -rf tangent_circles
+	@rm -rf divisor_nim
