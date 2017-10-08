@@ -3,7 +3,21 @@
 vector<ll> T1;
 vector<ll> T3;
 ll N;
-map<ll, ll> store;
+
+deque<pair<ll, ll> > s3;
+
+struct Bidule {
+	ll current;
+	ll index;
+	ll contientUnImpair; 
+	ll pariteSomme;
+	ll pariteSeul;
+	ll firstTime;
+
+	Bidule(ll acurrent, ll anindex, ll acontientUnImpair, ll apariteSomme, ll apariteSeul, ll afirstTime) : current(acurrent), index(anindex), contientUnImpair(acontientUnImpair), pariteSomme(apariteSomme), pariteSeul(apariteSeul), firstTime(afirstTime) {}
+};
+
+deque<Bidule> s1;
 
 void initialize(ll n) {
 	vector<ll> primes;
@@ -17,27 +31,71 @@ void initialize(ll n) {
 	}
 }
 
-ll S1(ll current, ll index, ll contientUnImpair, ll pariteSomme, ll pariteSeul, ll firstTime) {
-	if (index == T1.size()) {
-		//if ((contientUnImpair != 0 && ((pariteSeul+1)%2==1)) or (pariteSomme+1)%2 == 1) {
-			//printf("%lld\n", current);
-			//cout << "ON EST PASSE LA: 11111111111" << endl;
-			//store[current]++;
-			//return 0;
-		//} 
-		return 0;
-		//return (contientUnImpair == 1)? 1: (pariteSomme+1)%2;
+void display(Bidule bid) {
+	cout << "current = " << bid.current << endl;
+	cout << "index = " << bid.index << endl;
+	cout << "contientUnImpair = " << bid.contientUnImpair << endl;
+	cout << "pariteSomme = " << bid.pariteSomme << endl;
+	cout << "pariteSeul = " << bid.pariteSeul << endl;
+	cout << "firstTime = " << bid.firstTime << endl;
+}
+
+ll S1() {
+	ll result = 0;
+	while (!s1.empty()) {
+		//cout << result << endl;
+		Bidule bid = s1.front();
+		s1.pop_front();
+		ll current = bid.current;
+		ll index = bid.index;
+		ll contientUnImpair = bid.contientUnImpair;
+		ll pariteSomme = bid.pariteSomme;
+		ll pariteSeul = bid.pariteSeul;
+		ll firstTime = bid.firstTime;
+	
+		cout << s1.size() << endl;
+		if (index < T1.size() and current > 0) {
+			if (contientUnImpair != 0) {
+				ll temp = current * pow(T1[index], 2);
+				cout << temp << endl;
+				if (abs(temp) > N) {
+					result += (pariteSeul+1)%2;
+				} else {
+					cout << "through herer 1111111111" << endl;
+					display(bid);
+					s1.pb(Bidule(current, index+1, contientUnImpair, pariteSomme, pariteSeul, 0));
+					if (contientUnImpair == T1[index]) {
+						pariteSeul = (pariteSeul+1)%2;
+					}
+					s1.pb(Bidule(temp, index, contientUnImpair, pariteSomme, pariteSeul, 0));
+				}
+			} else {
+				ll temp1 = current * T1[index];
+				if (abs(temp1) > N) {
+					result += (pariteSomme+1)%2;
+				} else {
+					if (firstTime == 1) {
+						cout << "through herer 2222222222" << endl;
+						s1.pb(Bidule(temp1, index, T1[index], pariteSomme, pariteSeul, 1));
+					}
+					ll temp2 = temp1 * T1[index];
+					if (abs(temp2) > N) {
+						cout << "through herer 3333333333" << endl;
+						s1.pb(Bidule(current, index+1, 0, pariteSomme, pariteSeul, 1));
+					} else {
+						cout << "through herer 4444444444" << endl;
+						s1.pb(Bidule(temp2, index, 0, (pariteSomme+1)%2, pariteSeul, 0));
+						s1.pb(Bidule(current, index+1, 0, pariteSomme, pariteSeul, 1));
+					}
+				}
+			}
+		}
 	}
-	if (contientUnImpair != 0) {
+	return result;
+
+/*	if (contientUnImpair != 0) {
 		ll temp = current * pow(T1[index], 2);
 		if (temp > N) {
-			//if ((pariteSeul+1)%2 == 1) {
-				//printf("%lld\n", current);
-				//cout << "ON EST PASSE LA: 22222222222" << " and pariteSeul = " << pariteSeul << endl;
-				//store[current]++;
-				//return 1;
-			//}
-			//return 0;
 			return (pariteSeul+1)%2;
 		}
 		ll result = S1(current, index+1, contientUnImpair, pariteSomme, pariteSeul, 1);
@@ -50,13 +108,6 @@ ll S1(ll current, ll index, ll contientUnImpair, ll pariteSomme, ll pariteSeul, 
 		ll result = 0;
 		ll temp1 = current * T1[index];
 		if (temp1 > N) {
-		//	if ((pariteSomme+1)%2 == 1) {
-		//		printf("%lld\n", current);
-		//		cout << "ON EST PASSE LA: 33333333333" << endl;
-		//		store[current]++;
-		//		return 1;
-			//} 
-			//return 0;
 			return (pariteSomme+1)%2;
 		}
 		if (firstTime == 1) {
@@ -64,36 +115,41 @@ ll S1(ll current, ll index, ll contientUnImpair, ll pariteSomme, ll pariteSeul, 
 		}
 		ll temp2 = temp1 * T1[index];
 		if (temp2 > N) {
-			/*if ((pariteSomme+1)%2 == 1) {
-				printf("%lld\n", current);
-				cout << "ON EST PASSE LA: 44444444444" << endl;
-				store[current]++;
-				result += 0;
-			}*/
 			return result + S1(current, index+1, 0, pariteSomme, pariteSeul, 1);
-			//return result+(pariteSomme+1)%2;
 		}
-		//cout << "ON EST PASSE LA: 55555555555" << endl;
 		result += S1(temp2, index, 0, (pariteSomme+1)%2, pariteSeul, 0) + S1(current, index+1, 0, pariteSomme, pariteSeul, 1);
 		return result;
-	}
+	}*/
 }
 
-ll S3(ll current, ll index) {
-	if (index >= T3.size()) {
-		return S1(current, 0, 0, 1, 0, 1);
+ll S3() {
+	ll result = 0;
+	while (!s3.empty()) {
+		cout << " s3 size = " << s3.size() << endl;
+		pair<ll, ll> p = s3.front();
+		s3.pop_front();
+		ll current = p.first;
+		ll index = p.second;
+
+
+		ll temp = current * pow(T3[index], 2);
+		if (index >= T3.size() or temp > N) {
+			s1.pb(Bidule(current, 0, 0, 1, 0, 1));
+			result += S1();
+		} else {
+			s3.pb(make_pair(temp, index));
+			s3.pb(make_pair(current, index+1));
+		}
 	}
-	ll temp = current * pow(T3[index], 2);
-	if (temp > N) {
-		return S1(current, 0, 0, 1, 0, 1);
-	}
-	return S3(temp, index) + S3(current, index+1);
+	return result;
 }
 
 ll sol(ll n) {
 	ll somme = 0;
-	for (ll k = 0; k <= floor(log(n)/log(2)); k++) {
-		somme += S3(pow(2, k), 0);
+	for (ll k = floor(log(n)/log(2)); k > -1 ; k--) {
+		cout << k << endl;
+		s3.pb(make_pair(pow(2, k), 0));
+		somme += S3();
 	}
 	return somme;
 }
@@ -117,12 +173,8 @@ void displayT3() {
 int main(int argc, char* argv[]) {
 	ll n = atoi(argv[1]);
 	initialize(n);
-	//displayT1();
-	//displayT3();
-	
 	N = n;
 	printf("F(%lld) = %lld\n", n, sol(n));
-	printf("F_no_duplicate(%lld) = %zu\n", n, store.size());
 	return 0;
 }
 
