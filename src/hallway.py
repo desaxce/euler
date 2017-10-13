@@ -50,7 +50,7 @@ def initialize(n):
 			T1.append(p)
 		elif p%4 == 3:
 			T3.append(p)
-
+ 
 def count_p(a, b):
 	result = 0
 	nn = N
