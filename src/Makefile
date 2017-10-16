@@ -1,7 +1,7 @@
-CFLAGS=-std=c++11
+CFLAGS=-std=c++11 -O2
 LFLAGS=-lprimesieve -L. -I.
 
-all: divisor_nim
+all: nested_square_roots
 
 # Careful about the order of parameters in the below line;
 # the .cc file must come first, else we got a linking issue.
@@ -42,3 +42,4 @@ clean:
 	@rm -rf gaussian_integers
 	@rm -rf tangent_circles
 	@rm -rf divisor_nim
+	rm -rf nested_square_roots
