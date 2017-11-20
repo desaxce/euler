@@ -14,6 +14,7 @@
 #include <bitset>
 #include <time.h>
 #include <utility> // std::pair
+//#include <pari/pari.h>
 
 #define ll long long
 #define ld long double

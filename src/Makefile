@@ -1,7 +1,7 @@
 CFLAGS=-std=c++11 -O2
-LFLAGS=-lprimesieve -L. -I.
+LFLAGS=-lprimesieve -lpari -L.:/usr/local/include -I.
 
-all: nested_square_roots
+all: pb614
 
 # Careful about the order of parameters in the below line;
 # the .cc file must come first, else we got a linking issue.
@@ -43,3 +43,4 @@ clean:
 	@rm -rf tangent_circles
 	@rm -rf divisor_nim
 	rm -rf nested_square_roots
+	rm -rf pb614
