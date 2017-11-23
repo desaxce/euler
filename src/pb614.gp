@@ -83,6 +83,11 @@ q_naif(n) =
 	return (qq[n+1]);
 }
 
+s(n) = 
+{
+	return (polcoeff(prod(k = 0, n, (1+x^(2*k+1))), n));
+}
+
 q_tres_naif(n) = 
 {
 	return (polcoeff(prod(i = 1, n, (1+x^i)), n));
