@@ -1,5 +1,5 @@
 CFLAGS=-std=c++11 -O2
-LFLAGS=-lprimesieve -lpari -L.:/usr/local/include -I.
+LFLAGS=-lprimesieve -L.:/usr/local/include -I.
 
 all: pb614
 
@@ -42,5 +42,11 @@ clean:
 	@rm -rf gaussian_integers
 	@rm -rf tangent_circles
 	@rm -rf divisor_nim
-	rm -rf nested_square_roots
-	rm -rf pb614
+	@rm -rf nested_square_roots
+	@rm -rf pb614
+	@rm -rf pb643
+	@rm -rf pb351
+	@rm -rf pb642
+	@rm -rf pb407
+
+
