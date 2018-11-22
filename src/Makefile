@@ -48,5 +48,6 @@ clean:
 	@rm -rf pb351
 	@rm -rf pb642
 	@rm -rf pb407
+	@rm -rf pb641
 
 
