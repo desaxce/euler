@@ -24,7 +24,7 @@ bool hammingGeneralised(int indexP, bool isEven, int n, long long k) {
   bool continuer = true;
   // n+1 because it's forbidden to reuse the same prime number
   for (int i = n; i < indexP && continuer ; i++) {
-    continuer = hammingGeneralised(indexP, k==1?false:!isEven, i+1, primes[i]*k);
+    continuer = hammingGeneralised(indexP, !isEven, i+1, primes[i]*k);
   }
   return true;
 }
@@ -32,7 +32,6 @@ bool hammingGeneralised(int indexP, bool isEven, int n, long long k) {
 int main() {
   // N6 = floor(pow(N, 1/6.));
   // N4 = floor(pow(N, 1/4.));
-
   primesieve::generate_primes(N4, &primes);
 
   s = 1;
